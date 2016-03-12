@@ -1,0 +1,6 @@
+- Possible implementations:
+	- reagent.core/ratom [[Reagent]] (best)
+	- freactive.core/atom
+		- More efficient than Reagent's atoms and reactive expressions
+		- Far less supported
+		- Conclusion: Disadvantages outweigh benefits

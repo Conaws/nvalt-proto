@@ -3,5 +3,5 @@
 - Possible implementation:
 	- On application load,
 		- [[Read all the files in a directory]]
-		- Load them into an [[in-memory database]]
+		- [[Load note data into in-memory database]]
 		- Use a [[search indexer]] to index the text to perform quick searches and autocomplete

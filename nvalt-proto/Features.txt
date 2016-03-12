@@ -8,7 +8,7 @@
 	- Bold, italic, strikethrough, make text plain (with corresponding key bindings)
 - [[Spelling correction]]
 - [[Search notes for text]]
-- Autocomplete links
+- [[Autocomplete links]]
 - Display
 	- View/hide notes (title, date modified)
 	- Horizontal vs. vertical layout

@@ -3,3 +3,4 @@ nvalt/
 
 nvalt-proto/*
 !nvalt-proto/*.txt
+!nvalt-proto/*Settings
