@@ -22,7 +22,17 @@
        (map    (juxt #(->> % .getName (dropr 4)) slurp))
        (into {})))
 
+(defn extract-links-from-files
+  [files]
+  (->> files
+       (map [[file-name file-text]]
+         [file-name (->> file-text
+                         (re-seq #"\[\[.*\]\]")
+                         (into #{}))])
+       (into {})))
+
 (defn tests []
-  (pprint (read-files "./nvalt-proto")))
+  (pprint (read-files               "./nvalt-proto"))
+  (pprint (extract-links-from-files "./nvalt-proto")))
 
 (tests)
