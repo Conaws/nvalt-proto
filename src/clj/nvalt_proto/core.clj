@@ -23,6 +23,6 @@
        (into {})))
 
 (defn tests []
-  (pprint (read-files "/Users/alexandergunnarson/Development/Source Code Projects/junto-labs/nvalt-proto/nvalt-proto")))
+  (pprint (read-files "./nvalt-proto")))
 
 (tests)
