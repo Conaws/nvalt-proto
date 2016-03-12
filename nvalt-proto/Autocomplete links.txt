@@ -1,0 +1,4 @@
+- Possible implementation 1:
+	- As one is typing, an event handler updates the [[global state atom]] with checks to see whether the last two characters in the text area were "[\[" (start of a link)
+	- If they were, then the text area's String value is modified according to what the user types after the "[\[". Uses a [[search indexer]] on the [[In-memory database]] to find text which matches all note titles.
+	- The event handler stops listening after the user types "]\]".

@@ -1,5 +1,2 @@
 orgmap/
 nvalt/
-
-nvalt-proto/*
-!nvalt-proto/*.txt

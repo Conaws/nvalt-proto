@@ -1,0 +1,1 @@
+For each item `x` in a sequence, applies a function `f` to `x`
