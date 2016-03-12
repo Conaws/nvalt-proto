@@ -1,12 +1,16 @@
 [[Clojure Core Functions]]
 
-
-?  Clojure function to grab all the files in a directory
+Clojure function to grab all the files in a directory
+	[[clojure.core/file-seq]]
+		Performs a recursive search for all the files in a directory
 
 Read each file as a text string
 	Clojure.core/slurp
 
 Do the same thing to each file
 	clojure.core/map 
+	
+	
+
 
 

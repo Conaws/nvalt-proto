@@ -9,8 +9,5 @@ For each file, we want to grab the file name and the text of the file and store 
 	We'll call each pair of title and text a "node"
 
 
-
-
-
 Components
 [[Read all the Files in a Directory]]
