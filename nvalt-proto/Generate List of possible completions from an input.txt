@@ -1,0 +1,14 @@
+Purposes of the feature:  
+
+#Challenge:
+
+As the user types, the available autocompletions are scoped to what they have currently typed, based on the potential file names
+
+
+1   [[Determine possible completions of a string]]
+
+2. Display in the UI
+	-	Allow the user to navigate those using arrow keys and tab/return	
+		
+
+
