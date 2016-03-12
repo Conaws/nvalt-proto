@@ -1,0 +1,3 @@
+If there is a cycle in the graph, determine which node is globally lower, for the links from the lower to the higher, represent this as another kind of link 
+
+When used in [[Write a .org file which represents the hierarchy of this graph]]: paste Link text rather than pasting in the text of the node. 

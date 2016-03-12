@@ -1,0 +1,1 @@
+Editing, for the MVP should be done only in nValt files, which would then be recompiled, so the change would happen automatically

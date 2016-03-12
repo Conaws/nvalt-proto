@@ -1,0 +1,27 @@
+#Components
+
+1. Write to a file 
+
+2. Choose the correct number of stars for the indentation
+
+3. Create links to "Parents" which are not the direct parent
+
+4.  [[Eliminate any cycles in the graph]]
+
+5. [[Pasting contents of file at the location of links in Tree view]]
+
+
+
+#Abandoned Paths
+
+1.  Each time a node is changed, it is changed at every location that the node exists
+	Reason For Abandonment:
+		[[Editing MVP]]
+
+2. Write to a file at a specific location in the file		
+	RA:	[[Editing MVP]]
+	
+
+
+	
+	
