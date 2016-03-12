@@ -12,7 +12,7 @@
 - Display
 	- View/hide notes (title, date modified)
 	- Horizontal vs. vertical layout
-	- Full screen
+	- [[Display full screen]]
 	- Preview window (plain text -> "pretty" HTML)
 - I/O
 	- Import note (Load plain text)
