@@ -5,8 +5,14 @@
             [clojure.string :as str])
   (:import java.io.File))
 
+(defn dropl
+  "Drop n elements from left end of a sequence. Eager"
+  [n s]
+  (cond (string? s)
+        (subs s n (count s))))
+
 (defn dropr
-  "Drop n elements from right end of a sequence"
+  "Drop n elements from right end of a sequence. Eager"
   [n s]
   (cond (string? s)
         (subs s 0 (- (count s) n))))
@@ -25,14 +31,22 @@
 (defn extract-links-from-files
   [files]
   (->> files
-       (map [[file-name file-text]]
+       (map (fn [[file-name file-text]]
          [file-name (->> file-text
                          (re-seq #"\[\[.*\]\]")
-                         (into #{}))])
+                         (map #(->> %
+                                    (dropl 2)
+                                    (dropr 2)))
+                         (into #{}))]))
        (into {})))
 
 (defn tests []
-  (pprint (read-files               "./nvalt-proto"))
-  (pprint (extract-links-from-files "./nvalt-proto")))
+  (let [files (-> "./nvalt-proto"
+                  read-files
+                  (doto pprint))
+        graph (-> files
+                  extract-links-from-files
+                  (doto pprint))]
+  ))
 
 (tests)
