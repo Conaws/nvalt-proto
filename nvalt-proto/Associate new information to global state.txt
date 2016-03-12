@@ -1,0 +1,10 @@
+[[Associate new information to global state -- Datascript]]
+
+
+[[Associate new information to global state -- Reagent]]
+
+
+Possibly using 
+	assoc-in
+	
+	

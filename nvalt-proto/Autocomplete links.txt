@@ -2,3 +2,33 @@
 	- As one is typing, an event handler updates the [[global state atom]] with checks to see whether the last two characters in the text area were "[\[" (start of a link)
 	- If they were, then the text area's String value is modified according to what the user types after the "[\[". Uses a [[search indexer]] on the [[In-memory database]] to find text which matches all note titles.
 	- The event handler stops listening after the user types "]\]".
+	
+
+
+Features:
+
+As one is typing 
+	Detect typing 
+		[[reagent onkeyup]]
+		[[->>]]
+		[[e.-target .-value]]
+
+	Update the global state atom and checks to see whether last two characters where start of a link
+		[[swap]]
+		[[Associate new information to global state]]
+		
+	
+		
+
+
+
+#Questions:
+	What are you using to hold the global state?
+	
+	What part of the global state are you updating on each keyup event
+	
+
+datascript connection to update the value of the note
+		[[]]
+		
+		
