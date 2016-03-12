@@ -1,0 +1,9 @@
+Options
+
+
+What we want for the text editor
+	Autocompletion of files
+	[/] Git integration 
+	
+[[Convert a Directory of Text files to a Mindmap]]
+

@@ -1,0 +1,16 @@
+
+How is it done?
+
+	Convert "abc" to regex "a.*b.*c"
+
+
+
+
+
+----------
+
+	http://stackoverflow.com/questions/20234676/how-does-ido-flex-matching-work
+
+
+	Without looking at the code, I can guess, because the effect is the same, that it is done the same way Icicles does it: add .* after each character in your input except the last, and use string-match to match the resulting regexp against the candidates.
+E.g.: Input: abc. Handled as regexp: a.*b.*c. Or similar. All that does is match each of the characters in your input against the candidate, but also allow for possibly other candidate chars in between successive chars of your input. It's a kind of poor man's "fuzzy" matching. More info, including comparison with other fuzzy matching approaches.

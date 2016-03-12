@@ -1,0 +1,6 @@
+#options
+1.	Set by the user
+2. 	Determined from loom
+	Probably not a good answer, because the root node is among the most likely to be involved in cycles
+
+ 
