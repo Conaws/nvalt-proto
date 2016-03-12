@@ -1,0 +1,30 @@
+- Note operations
+	- Create a note
+	- Rename a note
+	- Tag a note
+	- Delete a note
+- Formatting
+	- Create a dashed list automatically — able to be indented
+	- Bold, italic, strikethrough, make text plain (with corresponding key bindings)
+- [[Spelling correction]]
+- [[Search notes for text]]
+- Autocomplete links
+- Display
+	- View/hide notes (title, date modified)
+	- Horizontal vs. vertical layout
+	- Full screen
+	- Preview window (plain text -> "pretty" HTML)
+- I/O
+	- Import note (Load plain text)
+	- Markdownify (Load URL/HTML/markdown -> plain text)
+	- Export note (Save as plain text)
+	- Note autosave (where, as what?)
+	- Save as PDF
+	- Save preview HTML
+- Options
+	- Enable markdown completion
+- Shortcuts / Key bindings
+- Encryption
+- Note linking
+
+(I see improvements to be made on the features of nvALT but I will not put them here.)

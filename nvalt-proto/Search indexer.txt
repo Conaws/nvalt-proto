@@ -1,0 +1,4 @@
+- Possible implementation:
+	- [[Lucene]]
+		- How to use DataScript with Lucene?
+			- Datomic uses Lucene; Datomic could do it

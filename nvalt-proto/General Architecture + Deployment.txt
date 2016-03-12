@@ -1,0 +1,7 @@
+nvALT seems to be able to be recreated with a CLJS frontend (Reagent, DataScript) within a sort of native container such that CLJS can e.g. read/write files/notes.
+- This is feasible via Apache Cordova, which is basically a means to deploy HTML5 apps to any platform (desktop, mobile, etc.).
+	- There are many plugins available for Cordova, one of which is filesystem access.
+	- If one wishes to deploy an nvALT clone to a mobile platform, Cordova might be easier. 
+	- Cordova seems to be by far the cleanest.
+- This is likely possible in Node, as well, which has I/O support.
+- Alternatively, one can use a local CLJ server, communicate with the UI via websockets (Sente), and use the server to perform I/O operations. Then one could use RoboVM to deploy to any mobile device. However, this is a more difficult option and involves more moving parts, if you will. 

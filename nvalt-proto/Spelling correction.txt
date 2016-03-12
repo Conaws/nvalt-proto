@@ -1,0 +1,3 @@
+- Possible implementations:
+	- Built-in on Mac and iOS; I believe JavaScript uses this implementation
+	- Other platforms will almost certainly need a different implementation
