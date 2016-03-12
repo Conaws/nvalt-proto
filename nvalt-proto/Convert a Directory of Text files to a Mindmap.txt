@@ -1,0 +1,18 @@
+#Problem:
+###Given:  
+* A directory of text files
+	* each of which contains links to other files
+
+###Do:   
+1. Convert the directory into a directed graph, where each file is a node, and internal links in the file are edges.
+2. Display the directed graph visually
+
+-------------------------------------------------------
+
+#Paths:
+## ? [[Directory to OrgMode to OPML]] 
+
+
+
+------------------------- 
+_Parents_ [[Edgemap Prototype]]

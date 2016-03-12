@@ -1,0 +1,16 @@
+Functionality Needed
+1.	[[Create a directed graph where each file is a node and the links between the nodes are edges]]
+2.	Write a .org file which represents the hierarchy of this graph
+3.	Output this .org file into OPML	
+
+Description: 
+We want to look through all of the files in a nValt directory
+For each file, we want to grab the file name and the text of the file and store that in a data structure 
+	We'll call each pair of title and text a "node"
+
+
+
+
+
+Components
+[[Read all the Files in a Directory]]
