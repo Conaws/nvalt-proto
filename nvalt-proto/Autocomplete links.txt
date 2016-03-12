@@ -5,19 +5,25 @@
 	
 
 
-Features:
 
-As one is typing 
-	Detect typing 
-		[[reagent onkeyup]]
-		[[->>]]
-		[[e.-target .-value]]
+Components 
+1.	[[Trigger a change in global state, to initiate autocomplete links]]
 
-	Update the global state atom and checks to see whether last two characters where start of a link
-		[[swap]]
-		[[Associate new information to global state]]
+
+
+Purposes of the feature:  
+
+Challenge:
+
+As the user types, the available autocompletions are scoped to what they have currently typed
 		
+
 	
+			
+	
+
+
+		
 		
 
 

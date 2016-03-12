@@ -1,0 +1,25 @@
+Options:  Pattern matching on the string of typed input to look for [[
+As one is typing 
+	Detect typing 
+		[[reagent onkeyup]]
+		[[->>]]
+		[[e.-target .-value]]
+
+	Update the global state atom -- to say what is currently typed
+		[[swap]]
+		[[Associate new information to global state]]
+		
+		
+	Checks to see whether last two characters where start of a link
+		[[subs]]
+		[[=]]
+		or 
+		[[get]]
+		[[get-last]]
+		[[count]]
+		[[-]]
+		
+	Update global state atom to say you're within a link
+
+	
+Options:  keep an update of last character entered in global state, and trigger change when e.target .value & last = [[
