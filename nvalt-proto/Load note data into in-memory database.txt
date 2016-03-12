@@ -1,1 +1,5 @@
-Loads note data into an [[in-memory database]]
+Loads note data into an [[in-memory database]].
+
+Possible implementation:
+	- Given a `seq` of notes and corresponding note metadata (e.g. tags), for each note ([[clojure.core/map]]), creates a transaction-part consisting of a [[note entity]]
+	- Transact the transaction to the [[in-memory database]]

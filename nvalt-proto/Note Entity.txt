@@ -1,0 +1,9 @@
+A note with its corresponding metadata. Represented in the [[in-memory database]] according to the defined [[schemas]].
+
+Possible implementation:
+	- Note text
+		- :note/text, :cardinality :one, :string
+	- Note title
+		- :note/title, :cardinality :one, :string
+	- Tags
+		- :note/tags, :cardinality :many, :string
