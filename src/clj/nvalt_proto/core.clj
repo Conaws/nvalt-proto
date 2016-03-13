@@ -22,7 +22,22 @@
 ; ===== GRAPH FUNCTIONS ===== ;
 
 (defn shortest-paths
-  "Returns all shortest paths from root node to all other nodes in the graph."
+  "Returns all shortest paths from starting node @start to all other nodes in the graph.
+
+   Each returned key, k, is a node which is in the graph.
+   Each returned val, v, is a seq, the shortest path which @start takes to k.
+
+   A nil value with a node key means that the node is unreachable from the starting node @start."
+  {:in-types '{g     Loom.Digraph
+               start Any}
+   :out-type 'Map
+   :in      '(g/digraph
+               {:a #{:b :c}
+                :b #{}
+                :c #{:a}})
+   :out     '{:c (:a :c)
+              :b (:a :b)
+              :a nil}}
   [g start]
   (->> g :nodeset
        (map (fn [node] [node (galg/shortest-path g start node)]))
@@ -38,8 +53,23 @@
        (remove (fn [[from tos]] (empty? tos)))
        (into {})))
 
-(defn cycles
-  "Returns all cycles in a directed graph @g."
+(defn find-cycles
+  "Returns all cycles in a directed graph @g.
+
+   EXAMPLE NOTES:
+     a -> b
+     b -> a
+     Therefore there is a cycle from a <-> b."
+  {:in-type 'Loom.Digraph
+   :in      '(g/digraph
+               {:a #{:b :c}
+                :b #{}
+                :c #{:a}})
+   :out     '{:a #{:c}
+              :c #{:a}}
+   :todo    ["Perhaps it would be more intuitive to output the cycles
+              in the format #{[:a :c] [:c :a]} — cycle pairs,
+              where :a -> :c creates a cycle and :c -> :a creates a cycle."]}
   [g]
   (let [eventual (eventual-connections g)]
     (->> eventual
@@ -65,6 +95,8 @@
 (defn read-files
   "Slurps the .txt files in a given directory.
    Outputs a map of <file-name> -> <file-text>"
+  {:in-type 'String
+   :in      "my-path/file.txt"}
   [path]
   (->> path
        (File.)
@@ -76,6 +108,8 @@
 (defn extract-links-from-file
   "Extracts [[]] links from text in file.
    Ensures that all links are capitalized."
+  {:in-type 'String
+   :in      "any text [[link]] more text"}
   [file-text]
   (->> file-text
        (re-seq #"\[\[.+?\]\]")
@@ -104,38 +138,35 @@
 (defn treeify-with-content
   "Converts a (possibly cyclic) directed graph to a tree,
    replacing its children with their content."
-  [g content-map]
-  )
+  [shortest-paths cycles content-map]
+  (->> shortest-paths))
 
 (defn tests []
-  (let [files (-> "./nvalt-proto"
-                  read-files
-                  (doto pprint))
+  (let [files (read-files "./nvalt-proto")
         graph (-> files
                   build-graph-from-file-vecs
-                  (doto pprint)
                   g/digraph)
         root-node "FEATURES"
         shortest-paths-from-root-node
           (->> (shortest-paths graph root-node)
-               (remove (fn [[to path]] (not (nil? path))))
+               (remove (fn [[to path]] (nil? path)))
                (into {}))
-        _ (do (println "===== SHORTEST PATHS FROM ROOT NODE =====")
-              (pprint shortest-paths-from-root-node)
-              (println "=========="))
         depths-from-root-node
           (depths-from-node graph root-node)
-        _ (pprint depths-from-root-node)
         cycles-from-root
           (->> graph
-               cycles
+               find-cycles
                (filter (fn [[from tos]] (contains? shortest-paths-from-root-node from)))
                (into {}))
-        _ (pprint cycles-from-root)
-        ;replaced
-          ;(treeify-with-content shortest-paths-from-root-node files)
-          ]
+        replaced
+          (treeify-with-content shortest-paths-from-root-node
+            cycles-from-root files)
+        _ (pprint replaced)]
   graph))
+
+
+
+
 
 (def graph (tests))
 

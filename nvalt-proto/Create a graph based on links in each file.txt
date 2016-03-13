@@ -1,0 +1,105 @@
+
+#Goal
+	Turn a directory into a map 
+		with cycles
+
+
+	[[Start at the root node]]
+	
+		Parse the text of the node
+		For any link -- add a child to the parent
+		Add a parent of this things Id to that parent
+		Add a depth  (check for cycles)
+		
+		Check that node to see if it has a depth, if it does then just put in a link (as in [[]]) to that node
+					you do want things to appear at various levels of the hierarchy as long they aren't cycles.
+		 If inserting text does not create a cycle
+		 	paste in the content of the node.
+		 	otherwise pasted in your link
+
+
+		*Heading 1
+			*link1
+
+
+
+
+#steps
+
+	(def nvaltProto {"Create a directed graph" {:text "string"}}    
+	
+	Find the root node
+
+	(identify whether the graph is cyclic) 
+	
+	Place that node in a file
+		Wherever you find a link
+			Paste in the value of that node 
+				But with a header that is of the appropriate depth
+					If a link would cause a cycle -- don't substitute it			
+
+  
+
+		 	
+
+
+	File-Seq the directory
+	Filter the ones that end in .txt
+	map and juxt in order to get a vector of the filename and the text of the file [name text]
+	
+	for all the vectors
+		on the right element 
+			get a set of all links in the set
+			
+				re-seq to find instances of the links
+					use the substring to take off the brackets
+			
+		end up with 3 tuple  [name text [links]]
+		
+	
+	assume that loom would only want the links
+	
+	have {:name text}
+		{:name nodes}
+	
+	
+	Use Loom to create a di-graph
+	
+	Let di-graph
+	have a variable that stores all the cycles in it (maybe a set)
+		:note -- want the connections that cause the cycles
+			   :get the path from your starting node back to itself from loom
+			   :result 
+ 
+ 	
+ 	
+ 	Goal:   Get a depth score for each of them
+ 		   Find all paths from your root node to all the nodes it can reach
+ 		   Mapping over the paths and counting them
+ 		   
+        
+        Filter --- 
+        		getting passed b as a possible link
+        		if  b have a lower depth score than a 
+        		    && is there a cycle that contains both b & a 
+
+	Next steps:
+		Treeify
+			(not sure if this algorithm works but there are some ideas here)
+			- Given the paths from the root to the nodes it can reach (@shortest-paths), @depths, and @cycles, we can 'treeify' the cyclic graph.
+			1. Sort the nodes by depth, from deepest to shallowest (largest to smallest).
+			2. The deepest node will not have any outgoing connections (i.e. no links in the file). Therefore, start with the second-deepest nodes. For each of those, let the node in question be N:
+				1. Replace N's link with the aggregated branch (subtree) of N (N's children, their children, etc.). If N's link does not cause a cycle. That is, if N is found in @cycles, and according to @cycles it would form a cycle with an outgoing link to another node A, then do not replace N with its aggregated branch. Otherwise replace it. Essentially you prune cycles this way.
+			3. Continue the process with the rest of the nodes, continuing in order to the shallower nodes.
+			4. You will have a (by definition) acyclic tree by the end.
+		Tree -> Bulleted list
+			- The depth of a node (as found in @depths) is the number of tabs preceding the bullet point in which that node is written.
+		Bulleted list -> replace nodes with their textual content
+			- Match the keys of the `files` map (which are node names) to the nodes. Replace with the corresponding vals (the slurped text)
+		Output to file
+			- clojure.core/spit
+
+		
+		
+	
+	[[Give each file a "depth" based on when it was referenced from the root node]]
