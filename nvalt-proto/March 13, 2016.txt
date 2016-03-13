@@ -1,2 +1,7 @@
 Notes:
-	if nvalt fails to autocomplete 
+	if nvalt fails to autocomplete just change the directory you're pointing to and then change back
+	
+	
+
+	
+	

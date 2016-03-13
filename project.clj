@@ -23,6 +23,8 @@
                    [posh                       "0.3.3.1"     ]
                  ; ==== GRAPH ====
                    [aysylu/loom                "0.5.4"       ] ; Latest 1/26/2015
+                 ; ==== PRINT ====
+                   [fipp                       "0.6.4"       ] ; Latest (as of 1/2/2016)
                  ]
 
   :plugins [[lein-environ        "1.0.1"      ]
@@ -36,6 +38,10 @@
   :min-lein-version "2.5.0"
 
   :uberjar-name "nvalt-proto.jar"
+
+  #_(comment
+    (do (require '[fipp.edn])
+        (clojure.main/repl :print clojure.pprint/pprint)))
 
   :main nvalt_proto.core
 

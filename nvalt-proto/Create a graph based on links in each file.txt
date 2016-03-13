@@ -1,0 +1,97 @@
+
+#Goal
+	Turn a directory into a map 
+		with cycles
+
+
+	[[Start at the root node]]
+	
+		Parse the text of the node
+		For any link -- add a child to the parent
+		Add a parent of this things Id to that parent
+		Add a depth  (check for cycles)
+		
+		Check that node to see if it has a depth, if it does then just put in a link (as in [[]]) to that node
+					you do want things to appear at various levels of the hierarchy as long they aren't cycles.
+		 If inserting text does not create a cycle
+		 	paste in the content of the node.
+		 	otherwise pasted in your link
+
+
+		*Heading 1
+			*link1
+
+
+
+
+#steps
+
+	(def nvaltProto {"Create a directed graph" {:text "string"}}    
+	
+	Find the root node
+
+	(identify whether the graph is cyclic) 
+	
+	Place that node in a file
+		Wherever you find a link
+			Paste in the value of that node 
+				But with a header that is of the appropriate depth
+					If a link would cause a cycle -- don't substitute it			
+
+  
+
+		 	
+
+
+	File-Seq the directory
+	Filter the ones that end in .txt
+	map and juxt in order to get a vector of the filename and the text of the file [name text]
+	
+	for all the vectors
+		on the right element 
+			get a set of all links in the set
+			
+				re-seq to find instances of the links
+					use the substring to take off the brackets
+			
+		end up with 3 tuple  [name text [links]]
+		
+	
+	assume that loom would only want the links
+	
+	have {:name text}
+		{:name nodes}
+	
+	
+	Use Loom to create a di-graph
+	
+	Let di-graph
+	have a variable that stores all the cycles in it (maybe a set)
+		:note -- want the connections that cause the cycles
+			   :get the path from your starting node back to itself from loom
+			   :result 
+ 
+ 	
+ 	
+ 	Goal:   Get a depth score for each of them
+ 		   Find all paths from your root node to all the nodes it can reach
+ 		   Mapping over the paths and counting them
+ 		   
+        
+        Filter --- 
+        		getting passed b as a possible link
+        		if  b have a lower depth score than a 
+        		    && is there a cycle that contains both b & a 
+
+	Next steps:
+		Treeify
+			- Given the shortest paths, depths, and cycles, we can 'treeify' the cyclic graph.
+		Tree -> Bulleted list
+			- 
+		Bulleted list -> replace with textual content of the associated files
+			- Use the `files` map 
+
+		
+		
+	
+	[[Give each file a "depth" based on when it was referenced from the root node]]
