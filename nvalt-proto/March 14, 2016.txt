@@ -13,3 +13,8 @@
 	
 5:42
 	[[Write a file from nvalt to emacs]]
+	
+11:44 -- 1:06
+	Reading
+
+	

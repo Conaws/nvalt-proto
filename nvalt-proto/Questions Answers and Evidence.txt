@@ -1,0 +1,69 @@
+Among possible [[Priorities]]
+
+
+#Goal:
+
+##	Be able to visually observe the following
+*	The open questions that I am trying to answer
+	* What sub questions must I answer to answer these questions 
+		* Why do I think this sub-question is relevant
+		
+*	The potential answers I am pursuing to those questions
+	* 	The level of completeness of an investigation
+		*	Whether the investigation is current
+	*	How satisfied I am with the answer to a question
+
+*	What evidence I have that an answer is complete
+	* For What reason do I believe this fact is true
+	* For what reason do I believe this fact is relevant to this question
+
+
+# Paths
+
+
+
+
+---	
+
+## Exploratory Questions 
+
+* Why would someone want to structure their thinking in such a modular way?
+	* Even though it would take a great deal of effort to outline one's thoughts in such a way
+	* It would be very much worth it if this greatly reduced the coordination effort 
+
+* What is the value of creating visual representations of the relationships drawn out in language?
+	* For example consider a statement like the one above: 
+		* Even though x, y would cause z if a and b.  
+		* In a single line of text a huge number of loose logical relationships can be expressed. 
+	
+	* What is limiting about this kind of an expression is that it doesn't take advantage of the interactive options that the new environment provides
+		* Particularly for exploration, personalization, and a high level overview of the results of how debates on details can affect the overall premise
+
+* Is this problem best addressed by UI design, or parsing plaintext?		aka
+	* How Is this problem best addressed
+		* UI design
+		* parsing plaintext		
+		
+
+## For consideration (Evidence/Assertions)
+
+* Tables of contents and other ways of breaking content down are important
+	* As they allow for better scanning
+	* + modularization
+	* But they create greater problems if you can't see them side by side to see how they influence one another
+
+
+* If it is possible to make a more modular/composable way of expressing a fact/thought, than changing it in one place could change it in  many other places 
+
+* If you could actually represent how ideas flow together, or how on premise is built off another, than changing an idea in one area, or discovering a new fact, could trigger alerts that the new ideas repercussions have weight in other places
+
+* Identifying the relationships between ideas will also show the valuable, unexplored territory that is of potentially high consequence
+
+* The UI, especially for a teaching tool, will impart habits of mind on the users, especially young ones, if it is successful
+
+* A focus on evidence has hints of logical positivism built into the UI 
+	-- it suggests that the path to greater knowledge is the constant collection of evidence
+	-- this is not good, especially if it favors searching for evidence to support the position you wish to take
+	-- however [[Collecting Evidence]]
+
+

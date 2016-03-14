@@ -1,0 +1,20 @@
+As of [[March 15, 2016]]
+
+
+##Question -- How is our problem best addressed?
+
+1.	[[Questions Answers and Evidence]]
+
+2.	[[Challenges, Guides, and Tools]]
+
+3.	Both	
+	
+
+# Options
+
+1. Create a visual representation of the graph of notes
+
+2. Create an interactive way to edit multiple notes at the same time
+
+
+

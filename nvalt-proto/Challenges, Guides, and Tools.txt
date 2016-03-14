@@ -1,0 +1,52 @@
+# Components
+
+1. State the problem
+	* What do you know about the problem at hand
+		
+2. Break the problem down into component pieces
+	* What smaller questions will help you answer the larger one
+
+3. What tools do you have available to you that might help you solve this problem?
+	* Not quite the same as 'potential answers', 
+	* but what do you have that might be a part of the answer 
+
+4. Design a Test for completion
+	* Aka: How will you that your problem is solved?
+
+5. Conduct experiments on various paths that might take you to the solution 
+	* This may relate to time/resources
+	
+
+6. Do all of this for each piece, as neccisary
+	* Recursion 
+	* There is no limit to how many levels you may want to go up or down the stack
+
+
+# Steps 
+
+1. Rewrite the files that flow out of following link so that
+	1. Each File has a unit test for a function on it
+	2. Each file has list of the functions that are used in it
+[[Create a directed graph where each file is a node and the links between the nodes are edges]]
+
+2. Keep in an org file of other features missing
+	
+
+[[Features]]
+
+
+
+# Assertions 
+
+Domain:  [[Solving a Problem you know others have solved before]]
+
+Almost every problem we encounter has had a portion of it addressed by someone else. 
+
+Our challenge as students is to break our large challenge into smaller challenges that we either know how to handle, or know that we can learn how do handle
+
+For a teacher, there is a related challenge -- when the student is faced with a problem
+
+
+# Relevant Resources
+
+[[How to Solve it]]
