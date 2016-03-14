@@ -4,5 +4,12 @@
 	Break
 3:12 -- 4:09 
 	Guitar (some code)
+		
+4:09 -- 5:00
+	[[zipmap]]
 
-
+5:00 -- 5:24
+	[[Clojure write a string with formatting]]
+	
+5:42
+	[[Write a file from nvalt to emacs]]

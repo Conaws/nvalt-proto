@@ -1,0 +1,15 @@
+
+
+PS2: Sometimes it's handy to be able to see what the current directory (so ".") is. You can get the absolute path in two ways:
+(System/getProperty "user.dir") 
+
+(-> (java.io.File. ".") .getAbsolutePath)
+
+
+
+PS: To be more explicit about the fact that you are reading and writing to a File and not something else, you could first create a File object and then coerce it into a BufferedReader or Writer:
+(reader (file "/tmp/test.txt"))
+;; or
+(writer (file "tmp/test.txt"))
+The file function is also in clojure.java.io.
+

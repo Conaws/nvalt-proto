@@ -1,1 +1,1113 @@
-(["Associate new information to global state" "[[Associate new information to global state -- Datascript]]\n\n\n[[Associate new information to global state -- Reagent]]\n\n\nPossibly using \n\t[[assoc-in]]\n\t\n\t"] ["Autocomplete links" "- Possible implementation 1:\n\t- As one is typing, an event handler updates the [[global state atom]] \n\t- with checks to see whether the last two characters in the text area were \"[\\[\" (start of a link)\n\t- If they were, then the text area's String value is modified according to what the user types after the \"[\\[\". \n\t- Uses a [[search indexer]] on the [[In-memory database]] to find text which matches all note titles.\n\t- The event handler stops listening after the user types \"]\\]\".\n\n\n\n\nComponents \n1.\t[[Trigger a change in global state, to initiate autocomplete links]]\n2. \t[[Generate List of possible completions from an input]]\n\n\n\t\t\n\t\t\n\n\n\n#Questions:\n\tWhat are you using to hold the global state?\n\t\n\tWhat part of the global state are you updating on each keyup event\n\t\n\ndatascript connection to update the value of the note\n\t\t[[]]\n\t\t\n\t\t\n"] ["clojure.core:map" "For each item `x` in a sequence, applies a function `f` to `x`"] ["clojure.core:subs" "clojure substring\n\tcalls .substring or whatever"] ["Convert a Directory of Text files to a Mindmap" "#Problem:\n###Given:  \n* A directory of text files\n\t* each of which contains links to other files\n\t\t* ? links autocomplete based on other file names in directory\n\n###Do:   \n1. Convert the directory into a directed graph, where each file is a node, and internal links in the file are edges.\n2. Display the directed graph visually\n\t*  As a single nested text file \n \t* As a graph proper\n\n-------------------------------------------------------\n\n#Paths:\n## ? [[Directory to OrgMode to OPML]] \n\n\n\n\n\n\n------------------------- \n_Parents_ [[Edgemap Prototype]]"] ["Create a directed graph where each file is a node and the links between the nodes are edges" "Components:\n\n1. [[Read all the files in a directory]]\n\n\n2.  Find all the links in a file\n\t[[Search a string for a pattern]]\n\t\n\tKv-map\n\t\n3. Create a graph based on links in each file\n\n\t\t\t\t\n\t\n\t\n\t\n\t\t\t\n\n\nComparable to [[Features]]\n"] ["Create a graph based on links in each file" "\n#Goal\n\tTurn a directory into a map \n\t\twith cycles\n\n\n\t[[Start at the root node]]\n\t\n\t\tParse the text of the node\n\t\tFor any link -- add a child to the parent\n\t\tAdd a parent of this things Id to that parent\n\t\tAdd a depth  (check for cycles)\n\t\t\n\t\tCheck that node to see if it has a depth, if it does then just put in a link (as in [[]]) to that node\n\t\t\t\t\tyou do want things to appear at various levels of the hierarchy as long they aren't cycles.\n\t\t If inserting text does not create a cycle\n\t\t \tpaste in the content of the node.\n\t\t \totherwise pasted in your link\n\n\n\t\t*Heading 1\n\t\t\t*link1\n\n\n\n\n#steps\n\n\t(def nvaltProto {\"Create a directed graph\" {:text \"string\"}}    \n\t\n\tFind the root node\n\n\t(identify whether the graph is cyclic) \n\t\n\tPlace that node in a file\n\t\tWherever you find a link\n\t\t\tPaste in the value of that node \n\t\t\t\tBut with a header that is of the appropriate depth\n\t\t\t\t\tIf a link would cause a cycle -- don't substitute it\t\t\t\n\n  \n\n\t\t \t\n\n\n\tFile-Seq the directory\n\tFilter the ones that end in .txt\n\tmap and juxt in order to get a vector of the filename and the text of the file [name text]\n\t\n\tfor all the vectors\n\t\ton the right element \n\t\t\tget a set of all links in the set\n\t\t\t\n\t\t\t\tre-seq to find instances of the links\n\t\t\t\t\tuse the substring to take off the brackets\n\t\t\t\n\t\tend up with 3 tuple  [name text [links]]\n\t\t\n\t\n\tassume that loom would only want the links\n\t\n\thave {:name text}\n\t\t{:name nodes}\n\t\n\t\n\tUse Loom to create a di-graph\n\t\n\tLet di-graph\n\thave a variable that stores all the cycles in it (maybe a set)\n\t\t:note -- want the connections that cause the cycles\n\t\t\t   :get the path from your starting node back to itself from loom\n\t\t\t   :result \n \n \t\n \t\n \tGoal:   Get a depth score for each of them\n \t\t   Find all paths from your root node to all the nodes it can reach\n \t\t   Mapping over the paths and counting them\n \t\t   \n        \n        Filter --- \n        \t\tgetting passed b as a possible link\n        \t\tif  b have a lower depth score than a \n        \t\t    && is there a cycle that contains both b & a \n\n\tNext steps:\n\t\tTreeify\n\t\t\t- Given the shortest paths, depths, and cycles, we can 'treeify' the cyclic graph.\n\t\tTree -> Bulleted list\n\t\t\t- \n\t\tBulleted list -> replace with textual content of the associated files\n\t\t\t- Use the `files` map \n\n\t\t\n\t\t\n\t\n\t[[Give each file a \"depth\" based on when it was referenced from the root node]]"] ["DataScript" ""] ["Determine possible completions of a string" "Take the possible set of matches\nAs characters come in for query string -- filter the set according to your filter rule generated by the string\n\n\t\n\t\n\t\n\n\n\n#get the matches in a set\n\tFilter by has one match\n\tSort by a rule \n\n\n#possible tools\n\t[[re-group]]\n\t[[re-find]]\n\t[[re-matches]]\n\t\n\n\n\n\n\n1:  \tUse [[fix style searching]] \n\tconverts string to a regex\n\t\tweakness\n\t\t\twon't give you results listed in order of closest match \n\t\tcompensation/fix\n\t\t\t[[sorting autocompletions]] \n\n\n2:\t\n\n\t\t\n\n\t\n2: \tLeventhein distance\n\n"] ["Directory to OrgMode to OPML" "Functionality Needed\n1.\t[[Create a directed graph where each file is a node and the links between the nodes are edges]]\n2.\t[[Write a .org file which represents the hierarchy of this graph]]\n3.\tOutput this .org file into OPML\t\n\nDescription: \nWe want to look through all of the files in a nValt directory\nFor each file, we want to grab the file name and the text of the file and store that in a data structure \n\tWe'll call each pair of title and text a \"node\"\n\n\nComponents\n[[Read all the Files in a Directory]]\n"] ["Display full screen" "- CLJS\n\t- Built into JS; not available on older browsers\n- CLJ\n\t- [[JavaFX]] has an option"] ["Edgemap Prototype" "Options\n\n\nWhat we want for the text editor\n\tAutocompletion of files\n\t[/] Git integration \n\t\n[[Convert a Directory of Text files to a Mindmap]]\n\n"] ["Editing MVP" "Editing, for the MVP should be done only in nValt files, which would then be recompiled, so the change would happen automatically"] ["Eliminate any cycles in the graph" "If there is a cycle in the graph, determine which node is globally lower, for the links from the lower to the higher, represent this as another kind of link \n\nWhen used in [[Write a .org file which represents the hierarchy of this graph]]: paste Link text rather than pasting in the text of the node. "] ["Features" "- Note operations\n\t- Create a note\n\t- Rename a note\n\t- Tag a note\n\t- Delete a note\n- Formatting\n\t- Create a dashed list automatically — able to be indented\n\t- Bold, italic, strikethrough, make text plain (with corresponding key bindings)\n- [[Spelling correction]]\n- [[Search notes for text]]\n- [[Autocomplete links]]\n- Display\n\t- View/hide notes (title, date modified)\n\t- Horizontal vs. vertical layout\n\t- [[Display full screen]]\n\t- Preview window (plain text -> \"pretty\" HTML)\n- I/O\n\t- Import note (Load plain text)\n\t- Markdownify (Load URL/HTML/markdown -> plain text)\n\t- Export note (Save as plain text)\n\t- Note autosave (where, as what?)\n\t- Save as PDF\n\t- Save preview HTML\n- Options\n\t- Enable markdown completion\n- Shortcuts / Key bindings\n- Encryption\n- Note linking\n\n(I see improvements to be made on the features of nvALT but I will not put them here.)"] ["fix style searching" "\nHow is it done?\n\n\tConvert \"abc\" to regex \"a.*b.*c\"\n\n\n\n\n\n----------\n\n\thttp://stackoverflow.com/questions/20234676/how-does-ido-flex-matching-work\n\n\n\tWithout looking at the code, I can guess, because the effect is the same, that it is done the same way Icicles does it: add .* after each character in your input except the last, and use string-match to match the resulting regexp against the candidates.\nE.g.: Input: abc. Handled as regexp: a.*b.*c. Or similar. All that does is match each of the characters in your input against the candidate, but also allow for possibly other candidate chars in between successive chars of your input. It's a kind of poor man's \"fuzzy\" matching. More info, including comparison with other fuzzy matching approaches."] ["General Architecture + Deployment" "nvALT seems to be able to be recreated with a CLJS frontend (Reagent, DataScript) within a sort of native container such that CLJS can e.g. read/write files/notes.\n- This is feasible via Apache Cordova, which is basically a means to deploy HTML5 apps to any platform (desktop, mobile, etc.).\n\t- There are many plugins available for Cordova, one of which is filesystem access.\n\t- If one wishes to deploy an nvALT clone to a mobile platform, Cordova might be easier. \n\t- Cordova seems to be by far the cleanest.\n- This is likely possible in Node, as well, which has I/O support.\n- Alternatively, one can use a local CLJ server, communicate with the UI via websockets (Sente), and use the server to perform I/O operations. Then one could use RoboVM to deploy to any mobile device. However, this is a more difficult option and involves more moving parts, if you will. "] ["Generate List of possible completions from an input" "Purposes of the feature:  \n\n#Challenge:\n\nAs the user types, the available autocompletions are scoped to what they have currently typed, based on the potential file names\n\n\n1   [[Determine possible completions of a string]]\n\n2. Display in the UI\n\t-\tAllow the user to navigate those using arrow keys and tab/return\t\n\t\t\n\n\n"] ["Give each file a \"depth\" based on when it was referenced from the root node" "Use the shortest path algorithm from loom"] ["Global state atom" "- Possible implementations:\n\t- reagent.core/ratom [[Reagent]] (best)\n\t- freactive.core/atom\n\t\t- More efficient than Reagent's atoms and reactive expressions\n\t\t- Far less supported\n\t\t- Conclusion: Disadvantages outweigh benefits"] ["In-memory database" "- Best implementation: [[DataScript]]"] ["JavaFX" ""] ["Load note data into in-memory database" "Loads note data into an [[in-memory database]].\n\nPossible implementation:\n\t- Given a `seq` of notes and corresponding note metadata (e.g. tags), for each note ([[clojure.core/map]]), creates a transaction-part consisting of a [[note entity]]\n\t- Transact the transaction to the [[in-memory database]]"] ["Lucene" ""] ["March 13, 2016" "Notes:\n\tif nvalt fails to autocomplete just change the directory you're pointing to and then change back\n\t\n\t\n\n\t\n\t"] ["March 14, 2016" "12:00 -- 3:01\n\tRefactoring Alex's Code\n3:01 -- 3:12\n\tBreak\n\t\n"] ["Note Entity" "A note with its corresponding metadata. Represented in the [[in-memory database]] according to the defined [[schemas]].\n\nPossible implementation:\n\t- Note text\n\t\t- :note/text, :cardinality :one, :string\n\t- Note title\n\t\t- :note/title, :cardinality :one, :string\n\t- Tags\n\t\t- :note/tags, :cardinality :many, :string"] ["Read all the files in a directory" "[[Clojure Core Functions]]\n\nClojure function to grab all the files in a directory\n\t[[clojure.core/file-seq]]\n\t\tPerforms a recursive search for all the files in a directory\n\nRead each file as a text string\n\tClojure.core/slurp\n\nDo the same thing to each file\n\tclojure.core/map \n\t\n\t\n\n\n\n"] ["Reagent" ""] ["schemas" "The schemas of the [[in-memory database]]"] ["Search a string for a pattern" "[[re-seq]] \n\n[[Regular Expressions]]\n"] ["Search indexer" "- Possible implementation:\n\t- [[Lucene]]\n\t\t- How to use DataScript with Lucene?\n\t\t\t- Datomic uses Lucene; Datomic could do it"] ["Search notes for text" "- Searches all notes with every keystroke\n\n- Possible implementation:\n\t- On application load,\n\t\t- [[Read all the files in a directory]]\n\t\t- [[Load note data into in-memory database]]\n\t\t- Use a [[search indexer]] to index the text to perform quick searches and autocomplete"] ["sorting autocompletions" "based on other properties\n\t\t\nor I might want to change the style of matching"] ["Spelling correction" "- Possible implementations:\n\t- Built-in on Mac and iOS; I believe JavaScript uses this implementation\n\t- Other platforms will almost certainly need a different implementation"] ["Start at the root node" "#options\n1.\tSet by the user\n2. \tDetermined from loom\n\tProbably not a good answer, because the root node is among the most likely to be involved in cycles\n\n \n"] ["Trigger a change in global state, to initiate autocomplete links" "Options:  Pattern matching on the string of typed input to look for [[\nAs one is typing \n\tDetect typing \n\t\t[[reagent onkeyup]]\n\t\t[[->>]]\n\t\t[[e.-target .-value]]\n\n\tUpdate the global state atom -- to say what is currently typed\n\t\t[[swap]]\n\t\t[[Associate new information to global state]]\n\t\t\n\t\t\n\tChecks to see whether last two characters where start of a link\n\t\t[[subs]]\n\t\t[[=]]\n\t\tor \n\t\t[[get]]\n\t\t[[get-last]]\n\t\t[[count]]\n\t\t[[-]]\n\t\t\n\tUpdate global state atom to say you're within a link\n\n\t\nOptions:  keep an update of last character entered in global state, and trigger change when e.target .value & last = [[\n"] ["Write a .org file which represents the hierarchy of this graph" "#Components\n\n1. Write to a file \n\n2. Choose the correct number of stars for the indentation\n\n3. Create links to \"Parents\" which are not the direct parent\n\n4.  [[Eliminate any cycles in the graph]]\n\n5. [[Pasting contents of file at the location of links in Tree view]]\n\n\n\n#Abandoned Paths\n\n1.  Each time a node is changed, it is changed at every location that the node exists\n\tReason For Abandonment:\n\t\t[[Editing MVP]]\n\n2. Write to a file at a specific location in the file\t\t\n\tRA:\t[[Editing MVP]]\n\t\n\n\n\t\n\t\n"])
+"** zipmap \n\tAttempt at defining myself on [[March 14, 2016]] at 5:00 \n(defn vec-to-map\n   \"Return a function which accepts a parameter that is destructured according to the names listed.... then create a map where the values are all the names, and... turns out this was just zipmap \"\n  ([v] (into {}))\n  ([v & names] (for [n names]\n                     :let i (range 100000)]\n                {n (nth v i)})))\n\n\n(defn zip-map\n  [k v]\n    (into{} (map vec (partition 2 (interleave k v)))))\n\n\nhttp://stackoverflow.com/questions/25548598/what-does-clojures-zip-map-do\n\nExcellent example of documentation \n\n\nExample of usage:\n(zip-map [:a :b :c] [1 2 3]) ;=> {:a 1, :b 2, :c 3}    \nAnd from the inside out:\n\n\t(interleave [:a :b :c] [1 2 3]) \n\t\t;=> (:a 1 :b 2 :c 3)\n\t(partition 2 '(:a 1 :b 2 :c 3)) \n\t\t;=> ((:a 1) (:b 2) (:c 3))\n\t(map\t vec '((:a 1) (:b 2) (:c 3))) \n\t\t;=> ([:a 1] [:b 2] [:c 3])\n\t(into {} '([:a 1] [:b 2] [:c 3])) \n\t\t;=> {:a 1, :b 2, :c 3}\n"
+** zipmap 
+	Attempt at defining myself on [[March 14, 2016]] at 5:00 
+(defn vec-to-map
+   "Return a function which accepts a parameter that is destructured according to the names listed.... then create a map where the values are all the names, and... turns out this was just zipmap "
+  ([v] (into {}))
+  ([v & names] (for [n names]
+                     :let i (range 100000)]
+                {n (nth v i)})))
+
+
+(defn zip-map
+  [k v]
+    (into{} (map vec (partition 2 (interleave k v)))))
+
+
+http://stackoverflow.com/questions/25548598/what-does-clojures-zip-map-do
+
+Excellent example of documentation 
+
+
+Example of usage:
+(zip-map [:a :b :c] [1 2 3]) ;=> {:a 1, :b 2, :c 3}    
+And from the inside out:
+
+	(interleave [:a :b :c] [1 2 3]) 
+		;=> (:a 1 :b 2 :c 3)
+	(partition 2 '(:a 1 :b 2 :c 3)) 
+		;=> ((:a 1) (:b 2) (:c 3))
+	(map	 vec '((:a 1) (:b 2) (:c 3))) 
+		;=> ([:a 1] [:b 2] [:c 3])
+	(into {} '([:a 1] [:b 2] [:c 3])) 
+		;=> {:a 1, :b 2, :c 3}
+** Associate new information to global state 
+	[[Associate new information to global state -- Datascript]]
+
+
+[[Associate new information to global state -- Reagent]]
+
+
+Possibly using 
+	[[assoc-in]]
+	
+	** Autocomplete links 
+	- Possible implementation 1:
+	- As one is typing, an event handler updates the [[global state atom]] 
+	- with checks to see whether the last two characters in the text area were "[\[" (start of a link)
+	- If they were, then the text area's String value is modified according to what the user types after the "[\[". 
+	- Uses a [[search indexer]] on the [[In-memory database]] to find text which matches all note titles.
+	- The event handler stops listening after the user types "]\]".
+
+
+
+
+Components 
+1.	[[Trigger a change in global state, to initiate autocomplete links]]
+2. 	[[Generate List of possible completions from an input]]
+
+
+		
+		
+
+
+
+#Questions:
+	What are you using to hold the global state?
+	
+	What part of the global state are you updating on each keyup event
+	
+
+datascript connection to update the value of the note
+		[[]]
+		
+		
+** Clojure write a string with formatting 
+	
+
+PS2: Sometimes it's handy to be able to see what the current directory (so ".") is. You can get the absolute path in two ways:
+(System/getProperty "user.dir") 
+
+(-> (java.io.File. ".") .getAbsolutePath)
+
+
+
+PS: To be more explicit about the fact that you are reading and writing to a File and not something else, you could first create a File object and then coerce it into a BufferedReader or Writer:
+(reader (file "/tmp/test.txt"))
+;; or
+(writer (file "tmp/test.txt"))
+The file function is also in clojure.java.io.
+
+** clojure.core:map 
+	For each item `x` in a sequence, applies a function `f` to `x`** clojure.core:subs 
+	clojure substring
+	calls .substring or whatever** Convert a Directory of Text files to a Mindmap 
+	#Problem:
+###Given:  
+* A directory of text files
+	* each of which contains links to other files
+		* ? links autocomplete based on other file names in directory
+
+###Do:   
+1. Convert the directory into a directed graph, where each file is a node, and internal links in the file are edges.
+2. Display the directed graph visually
+	*  As a single nested text file 
+ 	* As a graph proper
+
+-------------------------------------------------------
+
+#Paths:
+## ? [[Directory to OrgMode to OPML]] 
+
+
+
+
+
+
+------------------------- 
+_Parents_ [[Edgemap Prototype]]** Create a directed graph where each file is a node and the links between the nodes are edges 
+	Components:
+
+1. [[Read all the files in a directory]]
+
+
+2.  Find all the links in a file
+	[[Search a string for a pattern]]
+	
+	Kv-map
+	
+3. Create a graph based on links in each file
+
+				
+	
+	
+	
+			
+
+
+Comparable to [[Features]]
+** Create a graph based on links in each file 
+	
+#Goal
+	Turn a directory into a map 
+		with cycles
+
+
+	[[Start at the root node]]
+	
+		Parse the text of the node
+		For any link -- add a child to the parent
+		Add a parent of this things Id to that parent
+		Add a depth  (check for cycles)
+		
+		Check that node to see if it has a depth, if it does then just put in a link (as in [[]]) to that node
+					you do want things to appear at various levels of the hierarchy as long they aren't cycles.
+		 If inserting text does not create a cycle
+		 	paste in the content of the node.
+		 	otherwise pasted in your link
+
+
+		*Heading 1
+			*link1
+
+
+
+
+#steps
+
+	(def nvaltProto {"Create a directed graph" {:text "string"}}    
+	
+	Find the root node
+
+	(identify whether the graph is cyclic) 
+	
+	Place that node in a file
+		Wherever you find a link
+			Paste in the value of that node 
+				But with a header that is of the appropriate depth
+					If a link would cause a cycle -- don't substitute it			
+
+  
+
+		 	
+
+
+	File-Seq the directory
+	Filter the ones that end in .txt
+	map and juxt in order to get a vector of the filename and the text of the file [name text]
+	
+	for all the vectors
+		on the right element 
+			get a set of all links in the set
+			
+				re-seq to find instances of the links
+					use the substring to take off the brackets
+			
+		end up with 3 tuple  [name text [links]]
+		
+	
+	assume that loom would only want the links
+	
+	have {:name text}
+		{:name nodes}
+	
+	
+	Use Loom to create a di-graph
+	
+	Let di-graph
+	have a variable that stores all the cycles in it (maybe a set)
+		:note -- want the connections that cause the cycles
+			   :get the path from your starting node back to itself from loom
+			   :result 
+ 
+ 	
+ 	
+ 	Goal:   Get a depth score for each of them
+ 		   Find all paths from your root node to all the nodes it can reach
+ 		   Mapping over the paths and counting them
+ 		   
+        
+        Filter --- 
+        		getting passed b as a possible link
+        		if  b have a lower depth score than a 
+        		    && is there a cycle that contains both b & a 
+
+	Next steps:
+		Treeify
+			- Given the shortest paths, depths, and cycles, we can 'treeify' the cyclic graph.
+		Tree -> Bulleted list
+			- 
+		Bulleted list -> replace with textual content of the associated files
+			- Use the `files` map 
+
+		
+		
+	
+	[[Give each file a "depth" based on when it was referenced from the root node]]** DataScript 
+	** Determine possible completions of a string 
+	Take the possible set of matches
+As characters come in for query string -- filter the set according to your filter rule generated by the string
+
+	
+	
+	
+
+
+
+#get the matches in a set
+	Filter by has one match
+	Sort by a rule 
+
+
+#possible tools
+	[[re-group]]
+	[[re-find]]
+	[[re-matches]]
+	
+
+
+
+
+
+1:  	Use [[fix style searching]] 
+	converts string to a regex
+		weakness
+			won't give you results listed in order of closest match 
+		compensation/fix
+			[[sorting autocompletions]] 
+
+
+2:	
+
+		
+
+	
+2: 	Leventhein distance
+
+** Directory to OrgMode to OPML 
+	Functionality Needed
+1.	[[Create a directed graph where each file is a node and the links between the nodes are edges]]
+2.	[[Write a .org file which represents the hierarchy of this graph]]
+3.	Output this .org file into OPML	
+
+Description: 
+We want to look through all of the files in a nValt directory
+For each file, we want to grab the file name and the text of the file and store that in a data structure 
+	We'll call each pair of title and text a "node"
+
+
+Components
+[[Read all the Files in a Directory]]
+** Display full screen 
+	- CLJS
+	- Built into JS; not available on older browsers
+- CLJ
+	- [[JavaFX]] has an option** Edgemap Prototype 
+	Options
+
+
+What we want for the text editor
+	Autocompletion of files
+	[/] Git integration 
+	
+[[Convert a Directory of Text files to a Mindmap]]
+
+** Editing MVP 
+	Editing, for the MVP should be done only in nValt files, which would then be recompiled, so the change would happen automatically** Eliminate any cycles in the graph 
+	If there is a cycle in the graph, determine which node is globally lower, for the links from the lower to the higher, represent this as another kind of link 
+
+When used in [[Write a .org file which represents the hierarchy of this graph]]: paste Link text rather than pasting in the text of the node. ** Features 
+	- Note operations
+	- Create a note
+	- Rename a note
+	- Tag a note
+	- Delete a note
+- Formatting
+	- Create a dashed list automatically — able to be indented
+	- Bold, italic, strikethrough, make text plain (with corresponding key bindings)
+- [[Spelling correction]]
+- [[Search notes for text]]
+- [[Autocomplete links]]
+- Display
+	- View/hide notes (title, date modified)
+	- Horizontal vs. vertical layout
+	- [[Display full screen]]
+	- Preview window (plain text -> "pretty" HTML)
+- I/O
+	- Import note (Load plain text)
+	- Markdownify (Load URL/HTML/markdown -> plain text)
+	- Export note (Save as plain text)
+	- Note autosave (where, as what?)
+	- Save as PDF
+	- Save preview HTML
+- Options
+	- Enable markdown completion
+- Shortcuts / Key bindings
+- Encryption
+- Note linking
+
+(I see improvements to be made on the features of nvALT but I will not put them here.)** fix style searching 
+	
+How is it done?
+
+	Convert "abc" to regex "a.*b.*c"
+
+
+
+
+
+----------
+
+	http://stackoverflow.com/questions/20234676/how-does-ido-flex-matching-work
+
+
+	Without looking at the code, I can guess, because the effect is the same, that it is done the same way Icicles does it: add .* after each character in your input except the last, and use string-match to match the resulting regexp against the candidates.
+E.g.: Input: abc. Handled as regexp: a.*b.*c. Or similar. All that does is match each of the characters in your input against the candidate, but also allow for possibly other candidate chars in between successive chars of your input. It's a kind of poor man's "fuzzy" matching. More info, including comparison with other fuzzy matching approaches.** General Architecture + Deployment 
+	nvALT seems to be able to be recreated with a CLJS frontend (Reagent, DataScript) within a sort of native container such that CLJS can e.g. read/write files/notes.
+- This is feasible via Apache Cordova, which is basically a means to deploy HTML5 apps to any platform (desktop, mobile, etc.).
+	- There are many plugins available for Cordova, one of which is filesystem access.
+	- If one wishes to deploy an nvALT clone to a mobile platform, Cordova might be easier. 
+	- Cordova seems to be by far the cleanest.
+- This is likely possible in Node, as well, which has I/O support.
+- Alternatively, one can use a local CLJ server, communicate with the UI via websockets (Sente), and use the server to perform I/O operations. Then one could use RoboVM to deploy to any mobile device. However, this is a more difficult option and involves more moving parts, if you will. ** Generate List of possible completions from an input 
+	Purposes of the feature:  
+
+#Challenge:
+
+As the user types, the available autocompletions are scoped to what they have currently typed, based on the potential file names
+
+
+1   [[Determine possible completions of a string]]
+
+2. Display in the UI
+	-	Allow the user to navigate those using arrow keys and tab/return	
+		
+
+
+** Give each file a "depth" based on when it was referenced from the root node 
+	Use the shortest path algorithm from loom** Global state atom 
+	- Possible implementations:
+	- reagent.core/ratom [[Reagent]] (best)
+	- freactive.core/atom
+		- More efficient than Reagent's atoms and reactive expressions
+		- Far less supported
+		- Conclusion: Disadvantages outweigh benefits** In-memory database 
+	- Best implementation: [[DataScript]]** JavaFX 
+	** Load note data into in-memory database 
+	Loads note data into an [[in-memory database]].
+
+Possible implementation:
+	- Given a `seq` of notes and corresponding note metadata (e.g. tags), for each note ([[clojure.core/map]]), creates a transaction-part consisting of a [[note entity]]
+	- Transact the transaction to the [[in-memory database]]** Lucene 
+	** March 13, 2016 
+	Notes:
+	if nvalt fails to autocomplete just change the directory you're pointing to and then change back
+	
+	
+
+	
+	** March 14, 2016 
+	12:00 -- 3:01
+	Refactoring Alex's Code
+3:01 -- 3:12
+	Break
+3:12 -- 4:09 
+	Guitar (some code)
+		
+4:09 -- 5:00
+	[[zipmap]]
+
+5:00 -- 5:24
+	[[Clojure write a string with formatting]]
+	
+5:42
+	[[Write a file from nvalt to emacs]]** Note Entity 
+	A note with its corresponding metadata. Represented in the [[in-memory database]] according to the defined [[schemas]].
+
+Possible implementation:
+	- Note text
+		- :note/text, :cardinality :one, :string
+	- Note title
+		- :note/title, :cardinality :one, :string
+	- Tags
+		- :note/tags, :cardinality :many, :string** Read all the files in a directory 
+	[[Clojure Core Functions]]
+
+Clojure function to grab all the files in a directory
+	[[clojure.core/file-seq]]
+		Performs a recursive search for all the files in a directory
+
+Read each file as a text string
+	Clojure.core/slurp
+
+Do the same thing to each file
+	clojure.core/map 
+	
+	
+
+
+
+** Reagent 
+	** schemas 
+	The schemas of the [[in-memory database]]** Search a string for a pattern 
+	[[re-seq]] 
+
+[[Regular Expressions]]
+** Search indexer 
+	- Possible implementation:
+	- [[Lucene]]
+		- How to use DataScript with Lucene?
+			- Datomic uses Lucene; Datomic could do it** Search notes for text 
+	- Searches all notes with every keystroke
+
+- Possible implementation:
+	- On application load,
+		- [[Read all the files in a directory]]
+		- [[Load note data into in-memory database]]
+		- Use a [[search indexer]] to index the text to perform quick searches and autocomplete** sorting autocompletions 
+	based on other properties
+		
+or I might want to change the style of matching** Spelling correction 
+	- Possible implementations:
+	- Built-in on Mac and iOS; I believe JavaScript uses this implementation
+	- Other platforms will almost certainly need a different implementation** Start at the root node 
+	#options
+1.	Set by the user
+2. 	Determined from loom
+	Probably not a good answer, because the root node is among the most likely to be involved in cycles
+
+ 
+** Trigger a change in global state, to initiate autocomplete links 
+	Options:  Pattern matching on the string of typed input to look for [[
+As one is typing 
+	Detect typing 
+		[[reagent onkeyup]]
+		[[->>]]
+		[[e.-target .-value]]
+
+	Update the global state atom -- to say what is currently typed
+		[[swap]]
+		[[Associate new information to global state]]
+		
+		
+	Checks to see whether last two characters where start of a link
+		[[subs]]
+		[[=]]
+		or 
+		[[get]]
+		[[get-last]]
+		[[count]]
+		[[-]]
+		
+	Update global state atom to say you're within a link
+
+	
+Options:  keep an update of last character entered in global state, and trigger change when e.target .value & last = [[
+** Write a .org file which represents the hierarchy of this graph 
+	#Components
+
+1. Write to a file 
+
+2. Choose the correct number of stars for the indentation
+
+3. Create links to "Parents" which are not the direct parent
+
+4.  [[Eliminate any cycles in the graph]]
+
+5. [[Pasting contents of file at the location of links in Tree view]]
+
+
+
+#Abandoned Paths
+
+1.  Each time a node is changed, it is changed at every location that the node exists
+	Reason For Abandonment:
+		[[Editing MVP]]
+
+2. Write to a file at a specific location in the file		
+	RA:	[[Editing MVP]]
+	
+
+
+	
+	
+** Write a file from nvalt to emacs 
+	
+
+(defn print-page [{:keys [name text depth]}]
+  (str (header-stars depth) " " name " \n\t" text))
+
+
+
+
+(->> (read-files "./nvalt-proto")
+            last
+            (zipmap [:name :text])
+            (merge {:depth 2})
+            print-page
+            (#(spit "./nvalt-proto/1.org" % :append true))
+            logger)
+
+
+(-> (java.io.File. ".") .getAbsolutePath)** zipmap 
+	Attempt at defining myself on [[March 14, 2016]] at 5:00 
+(defn vec-to-map
+   "Return a function which accepts a parameter that is destructured according to the names listed.... then create a map where the values are all the names, and... turns out this was just zipmap "
+  ([v] (into {}))
+  ([v & names] (for [n names]
+                     :let i (range 100000)]
+                {n (nth v i)})))
+
+
+(defn zip-map
+  [k v]
+    (into{} (map vec (partition 2 (interleave k v)))))
+
+
+http://stackoverflow.com/questions/25548598/what-does-clojures-zip-map-do
+
+Excellent example of documentation 
+
+
+Example of usage:
+(zip-map [:a :b :c] [1 2 3]) ;=> {:a 1, :b 2, :c 3}    
+And from the inside out:
+
+	(interleave [:a :b :c] [1 2 3]) 
+		;=> (:a 1 :b 2 :c 3)
+	(partition 2 '(:a 1 :b 2 :c 3)) 
+		;=> ((:a 1) (:b 2) (:c 3))
+	(map	 vec '((:a 1) (:b 2) (:c 3))) 
+		;=> ([:a 1] [:b 2] [:c 3])
+	(into {} '([:a 1] [:b 2] [:c 3])) 
+		;=> {:a 1, :b 2, :c 3}
+* Associate new information to global state 
+[[Associate new information to global state -- Datascript]]
+
+
+[[Associate new information to global state -- Reagent]]
+
+
+Possibly using 
+	[[assoc-in]]
+	
+	* Autocomplete links 
+- Possible implementation 1:
+	- As one is typing, an event handler updates the [[global state atom]] 
+	- with checks to see whether the last two characters in the text area were "[\[" (start of a link)
+	- If they were, then the text area's String value is modified according to what the user types after the "[\[". 
+	- Uses a [[search indexer]] on the [[In-memory database]] to find text which matches all note titles.
+	- The event handler stops listening after the user types "]\]".
+
+
+
+
+Components 
+1.	[[Trigger a change in global state, to initiate autocomplete links]]
+2. 	[[Generate List of possible completions from an input]]
+
+
+		
+		
+
+
+
+#Questions:
+	What are you using to hold the global state?
+	
+	What part of the global state are you updating on each keyup event
+	
+
+datascript connection to update the value of the note
+		[[]]
+		
+		
+* Clojure write a string with formatting 
+
+
+PS2: Sometimes it's handy to be able to see what the current directory (so ".") is. You can get the absolute path in two ways:
+(System/getProperty "user.dir") 
+
+(-> (java.io.File. ".") .getAbsolutePath)
+
+
+
+PS: To be more explicit about the fact that you are reading and writing to a File and not something else, you could first create a File object and then coerce it into a BufferedReader or Writer:
+(reader (file "/tmp/test.txt"))
+;; or
+(writer (file "tmp/test.txt"))
+The file function is also in clojure.java.io.
+
+* clojure.core:map 
+For each item `x` in a sequence, applies a function `f` to `x`* clojure.core:subs 
+clojure substring
+	calls .substring or whatever* Convert a Directory of Text files to a Mindmap 
+#Problem:
+###Given:  
+* A directory of text files
+	* each of which contains links to other files
+		* ? links autocomplete based on other file names in directory
+
+###Do:   
+1. Convert the directory into a directed graph, where each file is a node, and internal links in the file are edges.
+2. Display the directed graph visually
+	*  As a single nested text file 
+ 	* As a graph proper
+
+-------------------------------------------------------
+
+#Paths:
+## ? [[Directory to OrgMode to OPML]] 
+
+
+
+
+
+
+------------------------- 
+_Parents_ [[Edgemap Prototype]]* Create a directed graph where each file is a node and the links between the nodes are edges 
+Components:
+
+1. [[Read all the files in a directory]]
+
+
+2.  Find all the links in a file
+	[[Search a string for a pattern]]
+	
+	Kv-map
+	
+3. Create a graph based on links in each file
+
+				
+	
+	
+	
+			
+
+
+Comparable to [[Features]]
+* Create a graph based on links in each file 
+
+#Goal
+	Turn a directory into a map 
+		with cycles
+
+
+	[[Start at the root node]]
+	
+		Parse the text of the node
+		For any link -- add a child to the parent
+		Add a parent of this things Id to that parent
+		Add a depth  (check for cycles)
+		
+		Check that node to see if it has a depth, if it does then just put in a link (as in [[]]) to that node
+					you do want things to appear at various levels of the hierarchy as long they aren't cycles.
+		 If inserting text does not create a cycle
+		 	paste in the content of the node.
+		 	otherwise pasted in your link
+
+
+		*Heading 1
+			*link1
+
+
+
+
+#steps
+
+	(def nvaltProto {"Create a directed graph" {:text "string"}}    
+	
+	Find the root node
+
+	(identify whether the graph is cyclic) 
+	
+	Place that node in a file
+		Wherever you find a link
+			Paste in the value of that node 
+				But with a header that is of the appropriate depth
+					If a link would cause a cycle -- don't substitute it			
+
+  
+
+		 	
+
+
+	File-Seq the directory
+	Filter the ones that end in .txt
+	map and juxt in order to get a vector of the filename and the text of the file [name text]
+	
+	for all the vectors
+		on the right element 
+			get a set of all links in the set
+			
+				re-seq to find instances of the links
+					use the substring to take off the brackets
+			
+		end up with 3 tuple  [name text [links]]
+		
+	
+	assume that loom would only want the links
+	
+	have {:name text}
+		{:name nodes}
+	
+	
+	Use Loom to create a di-graph
+	
+	Let di-graph
+	have a variable that stores all the cycles in it (maybe a set)
+		:note -- want the connections that cause the cycles
+			   :get the path from your starting node back to itself from loom
+			   :result 
+ 
+ 	
+ 	
+ 	Goal:   Get a depth score for each of them
+ 		   Find all paths from your root node to all the nodes it can reach
+ 		   Mapping over the paths and counting them
+ 		   
+        
+        Filter --- 
+        		getting passed b as a possible link
+        		if  b have a lower depth score than a 
+        		    && is there a cycle that contains both b & a 
+
+	Next steps:
+		Treeify
+			- Given the shortest paths, depths, and cycles, we can 'treeify' the cyclic graph.
+		Tree -> Bulleted list
+			- 
+		Bulleted list -> replace with textual content of the associated files
+			- Use the `files` map 
+
+		
+		
+	
+	[[Give each file a "depth" based on when it was referenced from the root node]]* DataScript 
+* Determine possible completions of a string 
+Take the possible set of matches
+As characters come in for query string -- filter the set according to your filter rule generated by the string
+
+	
+	
+	
+
+
+
+#get the matches in a set
+	Filter by has one match
+	Sort by a rule 
+
+
+#possible tools
+	[[re-group]]
+	[[re-find]]
+	[[re-matches]]
+	
+
+
+
+
+
+1:  	Use [[fix style searching]] 
+	converts string to a regex
+		weakness
+			won't give you results listed in order of closest match 
+		compensation/fix
+			[[sorting autocompletions]] 
+
+
+2:	
+
+		
+
+	
+2: 	Leventhein distance
+
+* Directory to OrgMode to OPML 
+Functionality Needed
+1.	[[Create a directed graph where each file is a node and the links between the nodes are edges]]
+2.	[[Write a .org file which represents the hierarchy of this graph]]
+3.	Output this .org file into OPML	
+
+Description: 
+We want to look through all of the files in a nValt directory
+For each file, we want to grab the file name and the text of the file and store that in a data structure 
+	We'll call each pair of title and text a "node"
+
+
+Components
+[[Read all the Files in a Directory]]
+* Display full screen 
+- CLJS
+	- Built into JS; not available on older browsers
+- CLJ
+	- [[JavaFX]] has an option* Edgemap Prototype 
+Options
+
+
+What we want for the text editor
+	Autocompletion of files
+	[/] Git integration 
+	
+[[Convert a Directory of Text files to a Mindmap]]
+
+* Editing MVP 
+Editing, for the MVP should be done only in nValt files, which would then be recompiled, so the change would happen automatically* Eliminate any cycles in the graph 
+If there is a cycle in the graph, determine which node is globally lower, for the links from the lower to the higher, represent this as another kind of link 
+
+When used in [[Write a .org file which represents the hierarchy of this graph]]: paste Link text rather than pasting in the text of the node. * Features 
+- Note operations
+	- Create a note
+	- Rename a note
+	- Tag a note
+	- Delete a note
+- Formatting
+	- Create a dashed list automatically — able to be indented
+	- Bold, italic, strikethrough, make text plain (with corresponding key bindings)
+- [[Spelling correction]]
+- [[Search notes for text]]
+- [[Autocomplete links]]
+- Display
+	- View/hide notes (title, date modified)
+	- Horizontal vs. vertical layout
+	- [[Display full screen]]
+	- Preview window (plain text -> "pretty" HTML)
+- I/O
+	- Import note (Load plain text)
+	- Markdownify (Load URL/HTML/markdown -> plain text)
+	- Export note (Save as plain text)
+	- Note autosave (where, as what?)
+	- Save as PDF
+	- Save preview HTML
+- Options
+	- Enable markdown completion
+- Shortcuts / Key bindings
+- Encryption
+- Note linking
+
+(I see improvements to be made on the features of nvALT but I will not put them here.)* fix style searching 
+
+How is it done?
+
+	Convert "abc" to regex "a.*b.*c"
+
+
+
+
+
+----------
+
+	http://stackoverflow.com/questions/20234676/how-does-ido-flex-matching-work
+
+
+	Without looking at the code, I can guess, because the effect is the same, that it is done the same way Icicles does it: add .* after each character in your input except the last, and use string-match to match the resulting regexp against the candidates.
+E.g.: Input: abc. Handled as regexp: a.*b.*c. Or similar. All that does is match each of the characters in your input against the candidate, but also allow for possibly other candidate chars in between successive chars of your input. It's a kind of poor man's "fuzzy" matching. More info, including comparison with other fuzzy matching approaches.* General Architecture + Deployment 
+nvALT seems to be able to be recreated with a CLJS frontend (Reagent, DataScript) within a sort of native container such that CLJS can e.g. read/write files/notes.
+- This is feasible via Apache Cordova, which is basically a means to deploy HTML5 apps to any platform (desktop, mobile, etc.).
+	- There are many plugins available for Cordova, one of which is filesystem access.
+	- If one wishes to deploy an nvALT clone to a mobile platform, Cordova might be easier. 
+	- Cordova seems to be by far the cleanest.
+- This is likely possible in Node, as well, which has I/O support.
+- Alternatively, one can use a local CLJ server, communicate with the UI via websockets (Sente), and use the server to perform I/O operations. Then one could use RoboVM to deploy to any mobile device. However, this is a more difficult option and involves more moving parts, if you will. * Generate List of possible completions from an input 
+Purposes of the feature:  
+
+#Challenge:
+
+As the user types, the available autocompletions are scoped to what they have currently typed, based on the potential file names
+
+
+1   [[Determine possible completions of a string]]
+
+2. Display in the UI
+	-	Allow the user to navigate those using arrow keys and tab/return	
+		
+
+
+* Give each file a "depth" based on when it was referenced from the root node 
+Use the shortest path algorithm from loom* Global state atom 
+- Possible implementations:
+	- reagent.core/ratom [[Reagent]] (best)
+	- freactive.core/atom
+		- More efficient than Reagent's atoms and reactive expressions
+		- Far less supported
+		- Conclusion: Disadvantages outweigh benefits* In-memory database 
+- Best implementation: [[DataScript]]* JavaFX 
+* Load note data into in-memory database 
+Loads note data into an [[in-memory database]].
+
+Possible implementation:
+	- Given a `seq` of notes and corresponding note metadata (e.g. tags), for each note ([[clojure.core/map]]), creates a transaction-part consisting of a [[note entity]]
+	- Transact the transaction to the [[in-memory database]]* Lucene 
+* March 13, 2016 
+Notes:
+	if nvalt fails to autocomplete just change the directory you're pointing to and then change back
+	
+	
+
+	
+	* March 14, 2016 
+12:00 -- 3:01
+	Refactoring Alex's Code
+3:01 -- 3:12
+	Break
+3:12 -- 4:09 
+	Guitar (some code)
+		
+4:09 -- 5:00
+	[[zipmap]]
+
+5:00 -- 5:24
+	[[Clojure write a string with formatting]]
+	
+5:42
+	[[Write a file from nvalt to emacs]]* Note Entity 
+A note with its corresponding metadata. Represented in the [[in-memory database]] according to the defined [[schemas]].
+
+Possible implementation:
+	- Note text
+		- :note/text, :cardinality :one, :string
+	- Note title
+		- :note/title, :cardinality :one, :string
+	- Tags
+		- :note/tags, :cardinality :many, :string* Read all the files in a directory 
+[[Clojure Core Functions]]
+
+Clojure function to grab all the files in a directory
+	[[clojure.core/file-seq]]
+		Performs a recursive search for all the files in a directory
+
+Read each file as a text string
+	Clojure.core/slurp
+
+Do the same thing to each file
+	clojure.core/map 
+	
+	
+
+
+
+* Reagent 
+* schemas 
+The schemas of the [[in-memory database]]* Search a string for a pattern 
+[[re-seq]] 
+
+[[Regular Expressions]]
+* Search indexer 
+- Possible implementation:
+	- [[Lucene]]
+		- How to use DataScript with Lucene?
+			- Datomic uses Lucene; Datomic could do it* Search notes for text 
+- Searches all notes with every keystroke
+
+- Possible implementation:
+	- On application load,
+		- [[Read all the files in a directory]]
+		- [[Load note data into in-memory database]]
+		- Use a [[search indexer]] to index the text to perform quick searches and autocomplete* sorting autocompletions 
+based on other properties
+		
+or I might want to change the style of matching* Spelling correction 
+- Possible implementations:
+	- Built-in on Mac and iOS; I believe JavaScript uses this implementation
+	- Other platforms will almost certainly need a different implementation* Start at the root node 
+#options
+1.	Set by the user
+2. 	Determined from loom
+	Probably not a good answer, because the root node is among the most likely to be involved in cycles
+
+ 
+* Trigger a change in global state, to initiate autocomplete links 
+Options:  Pattern matching on the string of typed input to look for [[
+As one is typing 
+	Detect typing 
+		[[reagent onkeyup]]
+		[[->>]]
+		[[e.-target .-value]]
+
+	Update the global state atom -- to say what is currently typed
+		[[swap]]
+		[[Associate new information to global state]]
+		
+		
+	Checks to see whether last two characters where start of a link
+		[[subs]]
+		[[=]]
+		or 
+		[[get]]
+		[[get-last]]
+		[[count]]
+		[[-]]
+		
+	Update global state atom to say you're within a link
+
+	
+Options:  keep an update of last character entered in global state, and trigger change when e.target .value & last = [[
+* Write a .org file which represents the hierarchy of this graph 
+#Components
+
+1. Write to a file 
+
+2. Choose the correct number of stars for the indentation
+
+3. Create links to "Parents" which are not the direct parent
+
+4.  [[Eliminate any cycles in the graph]]
+
+5. [[Pasting contents of file at the location of links in Tree view]]
+
+
+
+#Abandoned Paths
+
+1.  Each time a node is changed, it is changed at every location that the node exists
+	Reason For Abandonment:
+		[[Editing MVP]]
+
+2. Write to a file at a specific location in the file		
+	RA:	[[Editing MVP]]
+	
+
+
+	
+	
+* Write a file from nvalt to emacs 
+
+
+(defn print-page [{:keys [name text depth]}]
+  (str (header-stars depth) " " name " \n\t" text))
+
+
+
+
+(->> (read-files "./nvalt-proto")
+            last
+            (zipmap [:name :text])
+            (merge {:depth 2})
+            print-page
+            (#(spit "./nvalt-proto/1.org" % :append true))
+            logger)
+
+
+(-> (java.io.File. ".") .getAbsolutePath)* zipmap 
+Attempt at defining myself on [[March 14, 2016]] at 5:00 
+(defn vec-to-map
+   "Return a function which accepts a parameter that is destructured according to the names listed.... then create a map where the values are all the names, and... turns out this was just zipmap "
+  ([v] (into {}))
+  ([v & names] (for [n names]
+                     :let i (range 100000)]
+                {n (nth v i)})))
+
+
+(defn zip-map
+  [k v]
+    (into{} (map vec (partition 2 (interleave k v)))))
+
+
+http://stackoverflow.com/questions/25548598/what-does-clojures-zip-map-do
+
+Excellent example of documentation 
+
+
+Example of usage:
+(zip-map [:a :b :c] [1 2 3]) ;=> {:a 1, :b 2, :c 3}    
+And from the inside out:
+
+	(interleave [:a :b :c] [1 2 3]) 
+		;=> (:a 1 :b 2 :c 3)
+	(partition 2 '(:a 1 :b 2 :c 3)) 
+		;=> ((:a 1) (:b 2) (:c 3))
+	(map	 vec '((:a 1) (:b 2) (:c 3))) 
+		;=> ([:a 1] [:b 2] [:c 3])
+	(into {} '([:a 1] [:b 2] [:c 3])) 
+		;=> {:a 1, :b 2, :c 3}

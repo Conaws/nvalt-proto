@@ -134,7 +134,10 @@
    '("[[li]]" "[[link]]" "[[link]]"))
 
 (defn get-linkset [text]
-   (set (map (comp str/upper-case remove-brackets) (link-seq text))))
+  (->> text
+       link-seq
+       (map (comp remove-brackets str/upper-case))
+       set))
  
 #_(= (get-linkset "[[li]] is a [[link]] is a [[link]]")
  #{"LI" "LINK"})
@@ -150,14 +153,6 @@
 
 (= (build-link-graph (read-files "./test")) 
 #loom.graph.BasicEditableDigraph{:nodeset #{"FILE 3" "FILE2" "FILE 2" "FILE4" "FILE 4" "FILE1" "FILE 1" "FILE3"}, :adj {"FILE1" #{"FILE 3" "FILE 2"}, "FILE2" #{"FILE 3"}, "FILE3" #{"FILE 4"}, "FILE4" #{"FILE 1"}}, :in {"FILE 3" #{"FILE2" "FILE1"}, "FILE 2" #{"FILE1"}, "FILE 4" #{"FILE3"}, "FILE 1" #{"FILE4"}}}) 
-
-
-(defn treeify-with-content
-  "Converts a (possibly cyclic) directed graph to a tree,
-   replacing its children with their content."
-  [shortest-paths cycles content-map]
-  (->> shortest-paths))
-
 
 
 (defn tests []
@@ -183,14 +178,13 @@
   graph))
 
 
-(defn output [file] 
-  (spit "nvalt-proto/1.org" file))
-
-(output (pr-str (read-files "./nvalt-proto")))
 
 ;; Outputing a single file
 ;; Take a file name, depth, and the text
 ;; print a string where there are stars equal to the depth
+
+
+
 
 
 (defn header-stars [depth]
@@ -199,9 +193,51 @@
 (= "*****"
  (header-stars 5))
 
+(header-stars 1)
+
+;;output a single file
+
+(defn spit-pretty [target val] 
+ (spit target (with-out-str (pprint val))))
+
+(defn output [val]
+  (spit-pretty "./nvalt-proto/1.org" val))
+
+;; Note -- using partial application here printed out a lazy sequence, so used defn 
+
+(defn logger [x]
+  (do 
+    (pprint x)) 
+  x)
+
+
+
+(defn fileout* [file]
+  (->> file 
+       (zipmap [:name :text])
+       (merge {:depth 1})
+       print-page
+       (#(spit "./nvalt-proto/2.org" % :append true))))
+ 
+ 
+(map fileout* (read-files "./nvalt-proto"))
+            
+
+
+
+
+
 
 
 (def graph (tests))
+
+
+(defn treeify-with-content
+  "Converts a (possibly cyclic) directed graph to a tree,
+   replacing its children with their content."
+  [shortest-paths cycles content-map]
+  (->> shortest-paths))
+
 
 ;(def test-cyclic-graph {:a #{:b :c} :b #{:a} :c #{}})
 

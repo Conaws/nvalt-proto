@@ -1,0 +1,32 @@
+
+
+(defn print-page [{:keys [name text depth]}]
+  (str (header-stars depth) " " name " \n\t" text))
+
+
+
+
+----
+
+
+
+(defn fileout [target file]
+  (->> file 
+       (zipmap [:name :text])
+       (merge {:depth 1})
+       print-page*
+       (#(spit target  % :append true))))
+ 
+ 
+(defn org-from-nvalt [target dir]
+  (map (partial fileout target) (read-files dir)))
+            
+
+(org-from-nvalt "./nvalt-proto/test.org" "./test")
+
+
+(defn mypath []
+  (-> (java.io.File. ".") .getAbsolutePath))
+
+
+

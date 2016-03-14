@@ -1,0 +1,31 @@
+Attempt at defining myself on [[March 14, 2016]] at 5:00 
+(defn vec-to-map
+   "Return a function which accepts a parameter that is destructured according to the names listed.... then create a map where the values are all the names, and... turns out this was just zipmap "
+  ([v] (into {}))
+  ([v & names] (for [n names]
+                     :let i (range 100000)]
+                {n (nth v i)})))
+
+
+(defn zip-map
+  [k v]
+    (into{} (map vec (partition 2 (interleave k v)))))
+
+
+http://stackoverflow.com/questions/25548598/what-does-clojures-zip-map-do
+
+Excellent example of documentation 
+
+
+Example of usage:
+(zip-map [:a :b :c] [1 2 3]) ;=> {:a 1, :b 2, :c 3}    
+And from the inside out:
+
+	(interleave [:a :b :c] [1 2 3]) 
+		;=> (:a 1 :b 2 :c 3)
+	(partition 2 '(:a 1 :b 2 :c 3)) 
+		;=> ((:a 1) (:b 2) (:c 3))
+	(map	 vec '((:a 1) (:b 2) (:c 3))) 
+		;=> ([:a 1] [:b 2] [:c 3])
+	(into {} '([:a 1] [:b 2] [:c 3])) 
+		;=> {:a 1, :b 2, :c 3}
