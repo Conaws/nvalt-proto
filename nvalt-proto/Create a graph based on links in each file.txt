@@ -85,11 +85,27 @@
 
 	Next steps:
 		Treeify
+<<<<<<< HEAD
 			- Given the shortest paths, depths, and cycles, we can 'treeify' the cyclic graph.
 		Tree -> Bulleted list
 			- 
 		Bulleted list -> replace with textual content of the associated files
 			- Use the `files` map 
+=======
+			(not sure if this algorithm works but there are some ideas here)
+			- Given the paths from the root to the nodes it can reach (@shortest-paths), @depths, and @cycles, we can 'treeify' the cyclic graph.
+			1. Sort the nodes by depth, from deepest to shallowest (largest to smallest).
+			2. The deepest node will not have any outgoing connections (i.e. no links in the file). Therefore, start with the second-deepest nodes. For each of those, let the node in question be N:
+				1. Replace N's link with the aggregated branch (subtree) of N (N's children, their children, etc.). If N's link does not cause a cycle. That is, if N is found in @cycles, and according to @cycles it would form a cycle with an outgoing link to another node A, then do not replace N with its aggregated branch. Otherwise replace it. Essentially you prune cycles this way.
+			3. Continue the process with the rest of the nodes, continuing in order to the shallower nodes.
+			4. You will have a (by definition) acyclic tree by the end.
+		Tree -> Bulleted list
+			- The depth of a node (as found in @depths) is the number of tabs preceding the bullet point in which that node is written.
+		Bulleted list -> replace nodes with their textual content
+			- Match the keys of the `files` map (which are node names) to the nodes. Replace with the corresponding vals (the slurped text)
+		Output to file
+			- clojure.core/spit
+>>>>>>> origin/master
 
 		
 		

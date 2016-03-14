@@ -22,11 +22,16 @@
 ; ===== GRAPH FUNCTIONS ===== ;
 
 (defn shortest-paths
-  "Returns all shortest paths from node @start to all other nodes in the graph."
-  {:in-type '{g     Loom.Digraph
-              start Any}
-   :in      '{}
-   :out     '{}}
+  {:in-types '{g     Loom.Digraph
+               start Any}
+   :out-type 'Map
+   :in      '(g/digraph
+               {:a #{:b :c}
+                :b #{}
+                :c #{:a}})
+   :out     '{:c (:a :c)
+              :b (:a :b)
+              :a nil}}
   [g start]
   (->> g :nodeset
        (map (fn [node] [node (galg/shortest-path g start node)]))
@@ -43,18 +48,16 @@
        (into {})))
 
 (defn find-cycles
-  "Returns all cycles in a directed graph @g.
-   EXAMPLE NOTES:
-     a -> b
-     b -> a
-     Therefore there is a cycle from a <-> b."
+"Todo, test if intuition of example is correct"
   {:in-type 'Loom.Digraph
    :in      '{:a #{:b}
               :b #{:c :d}
               :c #{:a}
               :d #{}}
-   :out     '{:a #{:b}
-              :b #{:a}}}
+   :out     '{:c #{:a}}}
+   :todo    ["Perhaps it would be more intuitive to output the cycles
+              in the format #{[:a :c] [:c :a]} — cycle pairs,
+              where :a -> :c creates a cycle and :c -> :a creates a cycle."]}
   [g]
   (let [eventual (eventual-connections g)]
     (->> eventual
@@ -67,8 +70,6 @@
          (remove (fn [[from tos]] (empty? tos)))
          (into {}))))
 
-
-
 (defn depths-from-node
   [shortest-paths node]
   (->> shortest-paths
@@ -78,7 +79,6 @@
        (#(assoc % node 0))))
 
 ; ===== APP-SPECIFIC FUNCTIONS ===== ;
-
 
 (defn is-text-file? 
   {:test (is-text-file? "abce.txt")}
@@ -115,7 +115,6 @@
        (map file-to-vec)))
 
 #_(last (read-files "nvalt-proto"))
-
 
 
 (def remove-brackets
@@ -155,6 +154,48 @@
 #loom.graph.BasicEditableDigraph{:nodeset #{"FILE 3" "FILE2" "FILE 2" "FILE4" "FILE 4" "FILE1" "FILE 1" "FILE3"}, :adj {"FILE1" #{"FILE 3" "FILE 2"}, "FILE2" #{"FILE 3"}, "FILE3" #{"FILE 4"}, "FILE4" #{"FILE 1"}}, :in {"FILE 3" #{"FILE2" "FILE1"}, "FILE 2" #{"FILE1"}, "FILE 4" #{"FILE3"}, "FILE 1" #{"FILE4"}}}) 
 
 
+;;(comment 
+;;"Removing these"
+;;
+;;(defn extract-links-from-file
+;;  "Extracts [[]] links from text in file.
+;;   Ensures that all links are capitalized."
+;;  {:in-type 'String
+;;   :in      "any text [[link]] more text"}
+;;  [file-text]
+;;  (->> file-text
+;;       (re-seq #"\[\[.+?\]\]")
+;;       (map #(->> %
+;;                  (dropl 2)
+;;                  (dropr 2)))
+;;       (map str/upper-case)
+;;       (into #{})))
+;;
+;;(defn build-graph-from-file-vecs
+;;  "Extracts [[]] links from text in files.
+;;   Builds graph accordingly.
+;;   Ensures that all links are capitalized."
+;;  {:tests '{{"file-name"  "file text is here [[link]] [[other link]]"
+;;             "other link" "more file text 1"
+;;             "link"       "more file text 2"}
+;;            {"FILE-NAME"  #{"LINK" "OTHER LINK"}
+;;             "OTHER LINK" #{}
+;;             "LINK"       #{}}}}
+;;  [files]
+;;  (->> files
+;;       (map (fn [[file-name file-text]]
+;;         [(str/upper-case file-name) (extract-links-from-file file-text)]))
+;;       (into {}))))
+;;
+
+
+(defn treeify-with-content
+  "Converts a (possibly cyclic) directed graph to a tree,
+   replacing its children with their content."
+  [shortest-paths cycles content-map]
+  (->> shortest-paths))
+
+
 (defn tests []
   (let [files (read-files "./nvalt-proto")
         graph (build-link-graph files)
@@ -168,7 +209,6 @@
         cycles-from-root
           (->> graph
                find-cycles
-               ;; my point here is that 
                (filter (fn [[from tos]] (contains? shortest-paths-from-root-node from)))
                (into {}))
         replaced
@@ -179,32 +219,6 @@
 
 
 
-;; Outputing a single file
-;; Take a file name, depth, and the text
-;; print a string where there are stars equal to the depth
-
-
-
-
-
-(defn header-stars [depth]
-  (apply str (repeat depth "*")))
-
-(= "*****"
- (header-stars 5))
-
-(header-stars 1)
-
-;;output a single file
-
-(defn spit-pretty [target val] 
- (spit target (with-out-str (pprint val))))
-
-(defn output [val]
-  (spit-pretty "./nvalt-proto/1.org" val))
-
-;; Note -- using partial application here printed out a lazy sequence, so used defn 
-
 (defn logger [x]
   (do 
     (pprint x)) 
@@ -212,34 +226,34 @@
 
 
 
-(defn fileout* [file]
+
+(defn header-stars [depth]
+  (apply str (repeat depth "*")))
+
+#_(= "*****"
+ (header-stars 5))
+
+
+
+
+(defn print-page [{:keys [name text depth]}]
+  (str (header-stars depth) " " name " \n\t" text))
+
+
+(defn fileout [target file]
   (->> file 
        (zipmap [:name :text])
        (merge {:depth 1})
-       print-page
-       (#(spit "./nvalt-proto/2.org" % :append true))))
+       print-page*
+       (#(spit target  % :append true))))
  
  
-(map fileout* (read-files "./nvalt-proto"))
+(defn org-from-nvalt [target dir]
+  (map (partial fileout target) (read-files dir)))
             
 
+#_(org-from-nvalt "./nvalt-proto/test.org" "./test")
 
 
-
-
-
-
-(def graph (tests))
-
-
-(defn treeify-with-content
-  "Converts a (possibly cyclic) directed graph to a tree,
-   replacing its children with their content."
-  [shortest-paths cycles content-map]
-  (->> shortest-paths))
-
-
-;(def test-cyclic-graph {:a #{:b :c} :b #{:a} :c #{}})
-
-
- 
+(defn mypath []
+  (-> (java.io.File. ".") .getAbsolutePath))
