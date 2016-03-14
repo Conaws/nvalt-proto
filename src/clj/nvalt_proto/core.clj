@@ -47,8 +47,11 @@
        (remove (fn [[from tos]] (empty? tos)))
        (into {})))
 
+
+
 (defn find-cycles
-"Todo, test if intuition of example is correct"
+"So, my intution about how this SHOULD work was quite false -- in a graph where only one directed edge caused a cycle, this function returns all the members of the cycle, going in both directions -- I can see value in detecting the single connection that causes a cycle, but don't think this solution is ideal way to address the problem"
+
   {:in-type 'Loom.Digraph
    :in      '{:a #{:b}
               :b #{:c :d}
@@ -70,6 +73,27 @@
          (remove (fn [[from tos]] (empty? tos)))
          (into {}))))
 
+
+;;; Test failing expectation 
+;;; A better name for what this actually does might be, find potential cycles? It doesn't do that, I can't see any reason why this should include links that don't exist in input in the return results. 
+;; It should return either the link that creates the loop, or all the links that could be severed to end the loop. 
+;; as it stands I don't think this function is actionable 
+
+#_(= (or '{:c #{:a}}
+         '{:c #{:a} :a #{:b} :b #{:c}})
+     ;;; results in  {:c #{:b :a}, :b #{:c :a}, :a #{:c :b}} 
+     (find-cycles (g/digraph {:a #{:b}
+                              :b #{:c :d}
+                              :c #{:a}
+                              :d #{}})))
+
+
+
+(declare build-link-graph read-files)
+
+#_(find-cycles (build-link-graph (read-files "./test")))
+
+
 (defn depths-from-node
   [shortest-paths node]
   (->> shortest-paths
@@ -77,6 +101,8 @@
        (map    (fn [[to path]] [to (-> path count dec)]))
        (into {})
        (#(assoc % node 0))))
+
+
 
 ; ===== APP-SPECIFIC FUNCTIONS ===== ;
 
@@ -189,8 +215,8 @@
 ;;
 
 
-(defn treeify-with-content
-  "Converts a (possibly cyclic) directed graph to a tree,
+;(defn treeify-with-content
+;  "Converts a (possibly cyclic) directed graph to a tree,
    replacing its children with their content."
   [shortest-paths cycles content-map]
   (->> shortest-paths))
