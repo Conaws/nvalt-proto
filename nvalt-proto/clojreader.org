@@ -1,1 +1,145 @@
-* refile
+* refile 
+** ClojReader Parser 
+
+
+** Steps to completion
+	
+	file-seq from ealier
+
+	pull it into clojure-format 
+		Does it expand the macros?
+			No
+		read-string
+			parses the string into s expressions 
+
+
+			
+
+	read-str
+		Grab all s-expressions starting with 
+
+
+
+	Find a function
+		regex starts with (defn  .....   )\n\n  		  
+
+		unless defmacro 
+
+
+		reseq /\b.*\b/
+
+
+
+*** Dynamically generating paths in Clojure                 :clojure:content:
+	<2016-03-15 Tue 04:15>
+
+**** Components
+***** Walk a Clojure Project to get all the def's and defns
+	
+	check if list
+	check if def or defn
+
+
+***** Walk each of those and grab all the words used in there
+
+	re-seq words, everything that is not () basically, every atomic element
+
+
+
+****** Identify which are the parameters
+	
+	filter out, into something different -- the paraments
+
+
+
+***** Compare that with the functions 
+
+	
+	Create a directed graph of all the functions used in a project
+			or not 
+
+	Hello
+		->
+		str
+
+	Hello Everybody
+		Hello 
+		map 
+
+
+
+****** required at the top of the namespace
+
+	version 2
+
+****** def'd throughout the project
+
+	
+
+***** Generate a List of all the functions in the project
+
+
+
+
+
+
+****** Clicking on a function reveals the functions it is made of
+
+
+****** Sort the list based on which things are required in more places
+
+	
+	Answer two questions:
+		1) 	What functions in this list, have this as a member  (count this)
+			Topsort
+				loom.alg.topsort
+		
+
+
+		2)  What functions are a member of this  (basically equivelt to size of func)
+
+
+
+
+		{:name ->
+		 :used-by [Hello, Hello Everybody]
+
+		 }
+
+
+****** On each function, show the number of component functions it has
+
+
+
+***** Generate a List of functions that you know
+
+****** Clicking a button on a function adds it to your list
+
+	->
+		(click on this to add to my vocab)
+	juxt
+	map 
+	comp
+	partial 
+
+
+
+***** Show a ratio of "known to unknown" component functions
+
+	Set/intersetion of mylist & component functions
+
+
+
+****** It is possible to know a function without knowing its components :note:
+
+
+
+
+
+
+
+**** Other Projects 
+[[Import References From Grimoire]]
+
+*** Import References From Grimoire
+<2016-03-15 Tue 04:44>
