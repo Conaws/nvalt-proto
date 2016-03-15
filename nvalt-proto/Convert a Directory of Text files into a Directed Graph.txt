@@ -9,9 +9,6 @@ Components:
 	Kv-map
 	
 3. Create a graph based on links in each file
-
-				
-	
 	
 	
 			

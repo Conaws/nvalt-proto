@@ -27,7 +27,8 @@
 1. Rewrite the files that flow out of following link so that
 	1. Each File has a unit test for a function on it
 	2. Each file has list of the functions that are used in it
-[[Create a directed graph where each file is a node and the links between the nodes are edges]]
+	[[Directory to OrgMode to OPML]]
+	
 
 2. Keep in an org file of other features missing
 	

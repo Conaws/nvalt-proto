@@ -1,7 +1,8 @@
 Functionality Needed
-1.	[[Create a directed graph where each file is a node and the links between the nodes are edges]]
-2.	[[Write a .org file which represents the hierarchy of this graph]]
-3.	Output this .org file into OPML	
+1.	[[Convert a Directory of Text files into a Directed Graph]]
+2.	[[Convert a Directory of Text files to an Org-Mode File]]
+3.	[[Write a .org file which represents the hierarchy of a graph]]
+4.	Output this .org file into OPML	
 
 Description: 
 We want to look through all of the files in a nValt directory

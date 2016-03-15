@@ -1,0 +1,29 @@
+Components:
+
+1. [[Read all the files in a directory]]
+
+
+
+
+				
+
+
+
+
+
+
+Comparable to [[Features]]
+
+
+
+
+#Abandoned Paths
+
+
+##Not necessary for scope of this goal
+
+[x].  Find all the links in a file
+	[[Search a string for a pattern]]
+	
+	
+[x] Create a graph based on links in each file

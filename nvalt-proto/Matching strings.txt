@@ -1,0 +1,30 @@
+
+
+#Problem -- See if a string ends a certain way
+
+#Options
+
+
+A) Using [[Java Interop]]
+	Components:
+		[[.endsWith]]
+		[[#_str/ends-with?]]
+
+	(defn is-text-file? 
+		  {:test (is-text-file? "abce.txt")}
+  		[file-name] 
+    		(.endsWith #_str/ends-with? file-name ".txt"))
+    		
+    		
+B:  Using a regex pattern 
+	
+	1.  Dynamically Generate a regex pattern that contains an ending character 
+	2.  Check to see if string contains that pattern
+		
+	(defn ends-with? [pattern string]
+ 	 	(< 0 (count (re-find (re-pattern (str pattern "$")) string))))
+
+
+
+	http://stackoverflow.com/questions/22203919/dynamic-regex-argument-in-re-find-function-in-clojure
+	(re-pattern (str "(?i)" some-string))

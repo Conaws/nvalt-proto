@@ -76,7 +76,7 @@
 
 ;;; Test failing expectation 
 ;;; A better name for what this actually does might be, find potential cycles? It doesn't do that, I can't see any reason why this should include links that don't exist in input in the return results. 
-;; It should return either the link that creates the loop, or all the links that could be severed to end the loop. 
+;; It should return either the link that creates the lokop, or all the links that could be severed to end the loop. 
 ;; as it stands I don't think this function is actionable 
 
 #_(= (or '{:c #{:a}}
@@ -104,12 +104,26 @@
 
 
 
+
 ; ===== APP-SPECIFIC FUNCTIONS ===== ;
 
 (defn is-text-file? 
   {:test (is-text-file? "abce.txt")}
   [file-name] 
     (.endsWith #_str/ends-with? file-name ".txt"))
+
+
+
+
+(match (re-pattern (str ".txt" "$")) "abc.txt") 
+
+(defn ends-with? [pattern string]
+  (< 0 (count (re-matches (re-pattern (str pattern "$")) string))))
+
+
+ (< 0 (count (re-matches (re-pattern (str ".txt" "$")) "abdc.txt")))
+
+(ends-with? ".txt" "abdc.txt")
 
 
 (defn file-name 
@@ -140,7 +154,7 @@
        (filter #(is-text-file? (str %)))
        (map file-to-vec)))
 
-#_(last (read-files "nvalt-proto"))
+#_(first (read-files "test"))
 
 
 (def remove-brackets

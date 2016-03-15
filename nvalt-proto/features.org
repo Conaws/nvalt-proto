@@ -1,0 +1,65 @@
+* Back Button                                                      :movement:
+  <2016-03-15 Tue 02:48>
+* Multiple Windows                                                 :movement:
+<2016-03-15 Tue 02:56>
+* ClojReader Parser 
+** Dynamically generating paths in Clojure                  :clojure:content:
+<2016-03-15 Tue 04:15>
+*** Components
+**** Walk a Clojure Project to get all the def's and defns
+**** Walk each of those and grab all the words used in there
+***** Identify which are the parameters
+**** Compare that with the functions 
+***** required at the top of the namespace
+***** def'd throughout the project
+
+**** Generate a List of all the functions in the project
+
+***** Clicking on a function reveals the functions it is made of
+
+***** Sort the list based on which things are required in more places
+
+***** On each function, show the number of component functions it has
+
+
+
+**** Generate a List of functions that you know
+
+***** Clicking a button on a function adds it to your list
+
+
+**** Show a ratio of "known to unknown" component functions
+
+***** It is possible to know a function without knowing its components
+
+
+*** Other Projects 
+[[Import References From Grimoire]]
+
+** Import References From Grimoire
+<2016-03-15 Tue 04:44>
+* Change the title of a Node                                   :organization:
+<2016-03-15 Tue 03:15>
+
+When you change the title of a note -- you will want to see the note across all of its contexts
+It is possible, that rather than changing the title the note has in all of those locations, you will want to change it in only some locations and
+[[Alias Note]] the note in other ones
+* Alias Note
+Adding a different header which points to the same note, related to [[Cloning a Note]]
+* Cloning a Note
+* Create Context for Note Titles       :reading:typing:indentation:structure:
+<2016-03-15 Tue 03:32>
+
+When creating note titles -- you should be able to somehow specify the shared context between a number of links
+
+For example
+
+in a block where I am going to be looking for ways to achieve some piece of functionality using clojure, it is distracting to the eye, and to the writer to have to place
+   Clojure:  Find the current directory
+   Clojure:  Parse a string for a regular expression
+
+Instead I should be able to say
+
+   Clojure:
+       Find the current Directory
+       Parse a string for a regular Expression

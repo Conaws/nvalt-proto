@@ -1,0 +1,11 @@
+
+
+[[re-seq]]
+
+
+# Components 
+	
+	Finding all the Text files in a directory 
+	
+	[[Matching strings]]
+	

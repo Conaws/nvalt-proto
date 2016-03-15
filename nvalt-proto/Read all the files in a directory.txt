@@ -1,6 +1,10 @@
-[[Clojure Core Functions]]
+#Components 
 
-Clojure function to grab all the files in a directory
+[[Working with Text Files]]
+	[[Find Current Directory]]
+	[[Get all files in a Directory]]
+
+Get all the files in a directory
 	[[clojure.core/file-seq]]
 		Performs a recursive search for all the files in a directory
 
@@ -12,5 +16,19 @@ Do the same thing to each file
 	
 	
 
+#Solution
+	(defn read-files
+	  [path]
+	  (->> path
+	       (File.)
+	       file-seq
+	       (filter #(is-text-file? (str %)))
+	       (map file-to-vec)))
+	
 
 
+#Test
+	(= (first (read-files "test"))
+	    ["File 1" "[[File 2]] "])
+	    
+	    

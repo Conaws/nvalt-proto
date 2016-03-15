@@ -1,0 +1,1 @@
+Returns a Java object for the string passed in relative to current directory

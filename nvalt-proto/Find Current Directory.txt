@@ -1,0 +1,13 @@
+
+#components 
+	[[Java Interop]]
+		(:import java.io.File)
+
+	[[->]]
+
+	[[java.io.File.]]
+
+#solution
+
+(defn mypath []
+  (-> (java.io.File. ".") .getAbsolutePath))
