@@ -451,6 +451,23 @@
          [k (keys-containing m k)])
        (into {})))
 
+
+
+(defn update-map [m f] 
+  (reduce-kv (fn [m k v] 
+    (assoc m k (f v))) {} m))
+
+
+
+
+
+(def
+  ^{:doc "adding another value in to make sure doesn't override"}
+  newmap 
+  (reduce-kv (fn [m k v] 
+               (assoc m k (assoc v :count 1))) {} smap))
+
+
 (defn merge-inversion
   "Transforms @m to a multigraph, inverts it, and
    merges the result back into @m with the @parent-attr key."
@@ -464,16 +481,13 @@
        (#(->multigraph % child-attr))
        invert-multigraph
        (map-vals #(hash-map parent-attr %))
-       (merge-with conj smap)))
+       (merge-with conj m)))
 
 
 (defn add-parents [m] 
   (merge-inversion m :children :parents))
+ 
 
 
 
 
-
-(add-parents smap)
-
-(map-vals #(hash-map :parents %) (->multigraph smap :children) )
