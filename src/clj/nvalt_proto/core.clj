@@ -383,34 +383,75 @@
 
 
 
-(find-references-in-map [m attr]
+;(find-references-in-map [m attr])
 
 
 
-(def smap {:a {:children [:d]}
- :b {:children [:a]}
- :c {:children [:b :a]}
- :d {:children [:b :c :a]}})
+(def smap ; sample "directed graph"
+  {:a {:children [:d]}
+   :b {:children [:a]}
+   :c {:children [:b :a]}
+   :d {:children [:b :c :a :a]}})
 
-(for [k (keys smap)]
-   [k ])
+(defn map-vals [f coll]
+  (map (fn [[k v]] [k (f v)]) coll))
+
+(defn map-keys [f coll]
+  (map (fn [[k v]] [(f k) v]) coll))
+
+(defn filter-vals [pred coll]
+  (filter (fn [[k v]] (pred v)) coll))
+
+(defn filter-keys [pred coll]
+  (filter (fn [[k v]] (pred k)) coll))
 
 
-(let [a :a] 
-  (map (fn [[k v]] 
-         (= a (:children v))) smap))
-
-(defn ks-with-deep-v-in [m attr va]
-  (vec (map first (filter (fn [[k v]] 
-                            (some #{va} (attr v))) m))))
 
 
-#_(ks-with-deep-v-in smap :children :a))
 
-(defn add-parents [smap child-attr]
-  (merge-with conj smap
+(defn ->multigraph
+  {:tests '{(->multigraph smap :children)
+            {:a [:d]
+             :b [:a]
+             :c [:b :a]
+             :d [:b :c :a :a]}}}
+  [m k]
+  (->> m
+       (map-vals k)
+       (into {})))
+
+(defn keys-containing
+  "Takes a multigraph @m and returns all keys
+   whose vals contain @v."
+  {:tests '{(-> smap
+                (->multigraph :children)
+                (ks-with-deep-v-in :a))
+            [:b :c :d]}}
+  [m v]
+  (->> m
+       (filter-vals (partial some #{v}))
+       (mapv first)))
+
+#_(def ^{:tests '{(inc-all [1 2 3])
+                  [4 5 6]}}
+  inc-all (partial map inc))
+
+(defn add-parents
+  {:test '{(add-parents smap :children :parents)
+           {:a {:children [:d]       :parents [:b :c :d]}
+            :b {:children [:a]       :parents [:c :d]   }
+            :c {:children [:b :a]    :parents [:d]      }
+            :d {:children [:b :c :a] :parents [:a]      }}}}
+  [m child-attr parent-attr]
+  (let [multigraph (->multigraph m child-attr)]
+    (->> (for [va (keys multigraph)]
+           [va {:parents 
+                (keys-containing multigraph va)}])
+         (into {})
+         (merge-with conj smap)))
+
+
+  #_(merge-with conj smap
          (into {} (for [va (keys smap)]
                     [va {:parents 
-                         (ks-with-deep-v-in smap child-attr va)}]))))
-
-(add-parents smap :children)
+                         (ks-with-deep-v-in smap parent-attr va)}]))))
