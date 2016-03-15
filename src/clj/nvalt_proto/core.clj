@@ -305,12 +305,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; 
-<<<<<<< HEAD
 (def thispath  "./src/clj/nvalt_proto/core.clj") 
-=======
-
->>>>>>> origin/find-defns
 
 (defn file-path->code [^String path]
   (binding [#_*read-eval* #_false]
@@ -331,21 +326,10 @@
       code)
     @fn-sym))
 
-<<<<<<< HEAD
-
 (def thiscode (file-path->code thispath))
-
 
 (find-defns thiscode)
 
-
-
-
-(defn atomic? [x]
-  (or (symbol? x)
-      (string? x)
-      (number? x)))
-=======
 (defn atomic?
   {:todo ["Might be simpler to just do (not (coll? x))"]}
   [x]
@@ -353,7 +337,6 @@
       (string?  x)
       (number?  x)
       (keyword? x)))
->>>>>>> origin/find-defns
 
 (defn ->atomic-components
   {:tests '{(defn abc [a b] (+ 1 2))
