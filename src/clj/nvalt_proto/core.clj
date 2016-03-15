@@ -306,7 +306,11 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; 
+<<<<<<< HEAD
 (def thispath  "./src/clj/nvalt_proto/core.clj") 
+=======
+
+>>>>>>> origin/find-defns
 
 (defn file-path->code [^String path]
   (binding [#_*read-eval* #_false]
@@ -327,6 +331,7 @@
       code)
     @fn-sym))
 
+<<<<<<< HEAD
 
 (def thiscode (file-path->code thispath))
 
@@ -340,6 +345,15 @@
   (or (symbol? x)
       (string? x)
       (number? x)))
+=======
+(defn atomic?
+  {:todo ["Might be simpler to just do (not (coll? x))"]}
+  [x]
+  (or (symbol?  x)
+      (string?  x)
+      (number?  x)
+      (keyword? x)))
+>>>>>>> origin/find-defns
 
 (defn ->atomic-components
   {:tests '{(defn abc [a b] (+ 1 2))
@@ -357,22 +371,22 @@
 #_(postwalk (fn [x] (println x)) '(+ 1 2 3))
 
 (defn find-defns-and-vals [^String path]
-  (let [code (file-path->code path)
+  (let [; list, etc. format
+        code (file-path->code path)
         fn-sym (atom {})]
     (postwalk
       (fn [x]
-       ; (println x)
+        origin/find-defns
         (cond (list? x)
           (if (= 'defn (first x))
               (let [sym (second x)]
                 (swap! fn-sym assoc sym {:body              x
-                                         :components (->atomic-components x)}))))
+                                         :atomic-components (->atomic-components x)}))))
         x)
       code)
     @fn-sym))
- 
 
- (= (find-defns-and-vals "./src/clj/nvalt_proto/core.clj") 
+ #_(= (find-defns-and-vals "./src/clj/nvalt_proto/core.clj") 
   [{'mypath '(defn mypath [] 
                 (-> (java.io.File. ".") .getAbsolutePath))}])
 
@@ -380,7 +394,6 @@
 #_(let [path "./src/clj/nvalt_proto/core.clj"]
   (binding [#_*read-eval* #_false]
     (read-string (str "(do " (slurp path) ")"))))
-
 
 
 (last (find-defns-and-vals "./src/clj/nvalt_proto/core.clj"))
@@ -405,261 +418,3 @@
   (map (fn [[k v]] 
          (= a (:children v))) smap))
 
-
-
-
-
-
-
-
-
-
-
-
-; RESULT:
-
-(comment (do
- (ns
-  nvalt-proto.core
-  (:require
-   [loom.alg :as galg]
-   [loom.graph :as g]
-   [clojure.pprint :refer [pprint]]
-   [clojure.string :as str])
-  (:import java.io.File))
- (defn
-  dropl
-  "Drop n elements from left end of a sequence. Eager"
-  [n s]
-  (cond (string? s) (subs s n (count s))))
- (defn
-  dropr
-  "Drop n elements from right end of a sequence. Eager"
-  [n s]
-  (cond (string? s) (subs s 0 (- (count s) n))))
- (defn
-  shortest-paths
-  {:in-types '{g Loom.Digraph, start Any},
-   :out-type 'Map,
-   :in '(g/digraph {:a #{:c :b}, :b #{}, :c #{:a}}),
-   :out '{:c (:a :c), :b (:a :b), :a nil}}
-  [g start]
-  (->>
-   g
-   :nodeset
-   (map (fn [node] [node (galg/shortest-path g start node)]))
-   (into {})))
- (defn
-  eventual-connections
-  "All pairs of nodes which eventually connect.\n   Calculated via Johnson's algorithm."
-  [g]
-  (->>
-   g
-   galg/johnson
-   (map
-    (fn
-     [[from tos]]
-     [from (->> tos vals (apply merge) keys (into #{}))]))
-   (remove (fn [[from tos]] (empty? tos)))
-   (into {})))
- (defn
-  find-cycles
-  "So, my intution about how this SHOULD work was quite false -- in a graph where only one directed edge caused a cycle, this function returns all the members of the cycle, going in both directions -- I can see value in detecting the single connection that causes a cycle, but don't think this solution is ideal way to address the problem"
-  {:in-type 'Loom.Digraph,
-   :in '{:a #{:b}, :b #{:c :d}, :c #{:a}, :d #{}},
-   :out '{:c #{:b :a}, :b #{:c :a}, :a #{:c :b}},
-   :todo
-   ["Perhaps it would be more intuitive to output the cycles\n              in the format #{[:a :c] [:c :a]} — cycle pairs,\n              where :a -> :c creates a cycle and :c -> :a creates a cycle."]}
-  [g]
-  (let
-   [eventual (eventual-connections g)]
-   (->>
-    eventual
-    (map
-     (fn
-      [[from tos]]
-      [from
-       (->>
-        tos
-        (filter
-         (fn
-          [to]
-          (or
-           (-> eventual (get to) (get from) nil? not)
-           (-> eventual (get to) (get to) nil? not)
-           (-> eventual (get from) (get from) nil? not))))
-        (into #{}))]))
-    (remove (fn [[from tos]] (empty? tos)))
-    (into {}))))
- (declare build-link-graph read-files)
- (defn
-  depths-from-node
-  [shortest-paths node]
-  (->>
-   shortest-paths
-   (remove (fn [[to path]] (nil? path)))
-   (map (fn [[to path]] [to (-> path count dec)]))
-   (into {})
-   ((fn* [p1__3039#] (assoc p1__3039# node 0)))))
- (defn
-  is-text-file?
-  {:test (is-text-file? "abce.txt")}
-  [file-name]
-  (.endsWith file-name ".txt"))
- (match (re-pattern (str ".txt" "$")) "abc.txt")
- (defn
-  ends-with?
-  [pattern string]
-  (< 0 (count (re-matches (re-pattern (str pattern "$")) string))))
- (< 0 (count (re-matches (re-pattern (str ".txt" "$")) "abdc.txt")))
- (ends-with? ".txt" "abdc.txt")
- (defn
-  file-name
-  {:test (file-name (first (file-seq (File. "nvalt-proto"))))}
-  [file-object]
-  (->> file-object .getName (dropr 4)))
- (def file-to-vec (partial (juxt file-name slurp)))
- (defn
-  read-files
-  [path]
-  (->>
-   path
-   (File.)
-   file-seq
-   (filter (fn* [p1__3040#] (is-text-file? (str p1__3040#))))
-   (map file-to-vec)))
- (def
-  remove-brackets
-  (fn* [p1__3041#] (->> p1__3041# (dropl 2) (dropr 2))))
- (def link-seq (partial re-seq #"\[\[.+?\]\]"))
- (defn
-  get-linkset
-  [text]
-  (->> text link-seq (map (comp remove-brackets str/upper-case)) set))
- (defn
-  build-link-graph
-  [files]
-  (->>
-   files
-   (map (fn [[n t]] [(str/upper-case n) (get-linkset t)]))
-   (into {})
-   g/digraph))
- (defn
-  tests
-  []
-  (let
-   [files
-    (read-files "./nvalt-proto")
-    graph
-    (build-link-graph files)
-    root-node
-    "FEATURES"
-    shortest-paths-from-root-node
-    (->>
-     (shortest-paths graph root-node)
-     (remove (fn [[to path]] (nil? path)))
-     (into {}))
-    depths-from-root-node
-    (depths-from-node graph root-node)
-    cycles-from-root
-    (->>
-     graph
-     find-cycles
-     (filter
-      (fn [[from tos]] (contains? shortest-paths-from-root-node from)))
-     (into {}))
-    replaced
-    (treeify-with-content
-     shortest-paths-from-root-node
-     cycles-from-root
-     files)
-    _
-    (pprint replaced)]
-   graph))
- (defn logger [x] (do (pprint x)) x)
- (defn header-stars [depth] (apply str (repeat depth "*")))
- (defn
-  print-page
-  [{:keys [name text depth]}]
-  (str (header-stars depth) " " name " \n\t" text))
- (defn
-  fileout
-  [target file]
-  (->>
-   file
-   (zipmap [:name :text])
-   (merge {:depth 1})
-   ((fn* [p1__3042#] (spit target p1__3042# :append true)))))
- (defn
-  org-from-nvalt
-  [target dir]
-  (map (partial fileout target) (read-files dir)))
- (defn mypath [] (-> (java.io.File. ".") .getAbsolutePath))
- (defn
-  clojreader
-  [path]
-  (let
-   [code
-    (binding
-     [*read-eval* false]
-     (read-string (str "(do " (slurp path) ")")))]))
- (defn a [x y] (+ 1 3) () .)
- (=
-  (clojreader "./src/clj/nvalt_proto/core.clj")
-  [{'mypath
-    '(defn mypath [] (-> (java.io.File. ".") .getAbsolutePath))}])
- (let
-  [path "./src/clj/nvalt_proto/core.clj"]
-  (binding [] (read-string (str "(do " (slurp path) ")"))))))
-
-
-
-
-
-; RESULT
-
-#_[dropl
- dropr
- shortest-paths
- eventual-connections
- find-cycles
- depths-from-node
- is-text-file?
- ends-with?
- file-name
- read-files
- get-linkset
- build-link-graph
- tests
- logger
- header-stars
- print-page
- fileout
- org-from-nvalt
- mypath
- file-path->code
- clojreader
- a
- mypath
- dropl
- dropr
- shortest-paths
- eventual-connections
- find-cycles
- depths-from-node
- is-text-file?
- ends-with?
- file-name
- read-files
- get-linkset
- build-link-graph
- tests
- logger
- header-stars
- print-page
- fileout
- org-from-nvalt
- mypath
- clojreader
- a
- mypath]

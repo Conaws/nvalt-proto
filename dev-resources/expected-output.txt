@@ -1,0 +1,719 @@
+{ends-with?
+ {:body
+  (defn
+   ends-with?
+   [pattern string]
+   (< 0 (count (re-matches (re-pattern (str pattern "$")) string)))),
+  :atomic-components
+  [defn
+   ends-with?
+   pattern
+   string
+   <
+   0
+   count
+   re-matches
+   re-pattern
+   str
+   pattern
+   "$"
+   string]},
+ header-stars
+ {:body (defn header-stars [depth] (apply str (repeat depth "*"))),
+  :atomic-components
+  [defn header-stars depth apply str repeat depth "*"]},
+ file-path->code
+ {:body
+  (defn
+   file-path->code
+   [path]
+   (binding [] (read-string (str "(do " (slurp path) ")")))),
+  :atomic-components
+  [defn
+   file-path->code
+   path
+   binding
+   read-string
+   str
+   "(do "
+   slurp
+   path
+   ")"]},
+ mypath
+ {:body (defn mypath [] (-> (java.io.File. ".") .getAbsolutePath)),
+  :atomic-components
+  [defn mypath -> java.io.File. "." .getAbsolutePath]},
+ read-files
+ {:body
+  (defn
+   read-files
+   [path]
+   (->>
+    path
+    (File.)
+    file-seq
+    (filter (fn* [p1__3318#] (is-text-file? (str p1__3318#))))
+    (map file-to-vec))),
+  :atomic-components
+  [defn
+   read-files
+   path
+   ->>
+   path
+   File.
+   file-seq
+   filter
+   fn*
+   p1__3318#
+   is-text-file?
+   str
+   p1__3318#
+   map
+   file-to-vec]},
+ org-from-nvalt
+ {:body
+  (defn
+   org-from-nvalt
+   [target dir]
+   (map (partial fileout target) (read-files dir))),
+  :atomic-components
+  [defn
+   org-from-nvalt
+   target
+   dir
+   map
+   partial
+   fileout
+   target
+   read-files
+   dir]},
+ depths-from-node
+ {:body
+  (defn
+   depths-from-node
+   [shortest-paths node]
+   (->>
+    shortest-paths
+    (remove (fn [[to path]] (nil? path)))
+    (map (fn [[to path]] [to (-> path count dec)]))
+    (into {})
+    ((fn* [p1__3317#] (assoc p1__3317# node 0))))),
+  :atomic-components
+  [defn
+   depths-from-node
+   shortest-paths
+   node
+   ->>
+   shortest-paths
+   remove
+   fn
+   to
+   path
+   nil?
+   path
+   map
+   fn
+   to
+   path
+   to
+   ->
+   path
+   count
+   dec
+   into
+   fn*
+   p1__3317#
+   assoc
+   p1__3317#
+   node
+   0]},
+ abc
+ {:body (defn abc [a b] (+ 1 2)),
+  :atomic-components [defn abc a b + 1 2]},
+ eventual-connections
+ {:body
+  (defn
+   eventual-connections
+   "All pairs of nodes which eventually connect.\n   Calculated via Johnson's algorithm."
+   [g]
+   (->>
+    g
+    galg/johnson
+    (map
+     (fn
+      [[from tos]]
+      [from (->> tos vals (apply merge) keys (into #{}))]))
+    (remove (fn [[from tos]] (empty? tos)))
+    (into {}))),
+  :atomic-components
+  [defn
+   eventual-connections
+   "All pairs of nodes which eventually connect.\n   Calculated via Johnson's algorithm."
+   g
+   ->>
+   g
+   galg/johnson
+   map
+   fn
+   from
+   tos
+   from
+   ->>
+   tos
+   vals
+   apply
+   merge
+   keys
+   into
+   remove
+   fn
+   from
+   tos
+   empty?
+   tos
+   into]},
+ fileout
+ {:body
+  (defn
+   fileout
+   [target file]
+   (->>
+    file
+    (zipmap [:name :text])
+    (merge {:depth 1})
+    ((fn* [p1__3320#] (spit target p1__3320# :append true))))),
+  :atomic-components
+  [defn
+   fileout
+   target
+   file
+   ->>
+   file
+   zipmap
+   :name
+   :text
+   merge
+   :depth
+   1
+   fn*
+   p1__3320#
+   spit
+   target
+   p1__3320#
+   :append]},
+ atomic?
+ {:body
+  (defn
+   atomic?
+   {:todo ["Might be simpler to just do (not (coll? x))"]}
+   [x]
+   (or (symbol? x) (string? x) (number? x) (keyword? x))),
+  :atomic-components
+  [defn
+   atomic?
+   :todo
+   "Might be simpler to just do (not (coll? x))"
+   x
+   or
+   symbol?
+   x
+   string?
+   x
+   number?
+   x
+   keyword?
+   x]},
+ find-defns-and-vals
+ {:body
+  (defn
+   find-defns-and-vals
+   [path]
+   (let
+    [code (file-path->code path) fn-sym (atom {})]
+    (postwalk
+     (fn
+      [x]
+      (println x)
+      (cond
+       (list? x)
+       (if
+        (= 'defn (first x))
+        (let
+         [sym (second x)]
+         (swap!
+          fn-sym
+          assoc
+          sym
+          {:body x, :atomic-components (->atomic-components x)}))))
+      x)
+     code)
+    @fn-sym)),
+  :atomic-components
+  [defn
+   find-defns-and-vals
+   path
+   let
+   code
+   file-path->code
+   path
+   fn-sym
+   atom
+   postwalk
+   fn
+   x
+   println
+   x
+   cond
+   list?
+   x
+   if
+   =
+   quote
+   defn
+   first
+   x
+   let
+   sym
+   second
+   x
+   swap!
+   fn-sym
+   assoc
+   sym
+   :body
+   x
+   :atomic-components
+   ->atomic-components
+   x
+   x
+   code
+   clojure.core/deref
+   fn-sym]},
+ find-cycles
+ {:body
+  (defn
+   find-cycles
+   "So, my intution about how this SHOULD work was quite false -- in a graph where only one directed edge caused a cycle, this function returns all the members of the cycle, going in both directions -- I can see value in detecting the single connection that causes a cycle, but don't think this solution is ideal way to address the problem"
+   {:in-type 'Loom.Digraph,
+    :in '{:a #{:b}, :b #{:c :d}, :c #{:a}, :d #{}},
+    :out '{:c #{:b :a}, :b #{:c :a}, :a #{:c :b}},
+    :todo
+    ["Perhaps it would be more intuitive to output the cycles\n              in the format #{[:a :c] [:c :a]} — cycle pairs,\n              where :a -> :c creates a cycle and :c -> :a creates a cycle."]}
+   [g]
+   (let
+    [eventual (eventual-connections g)]
+    (->>
+     eventual
+     (map
+      (fn
+       [[from tos]]
+       [from
+        (->>
+         tos
+         (filter
+          (fn
+           [to]
+           (or
+            (-> eventual (get to) (get from) nil? not)
+            (-> eventual (get to) (get to) nil? not)
+            (-> eventual (get from) (get from) nil? not))))
+         (into #{}))]))
+     (remove (fn [[from tos]] (empty? tos)))
+     (into {})))),
+  :atomic-components
+  [defn
+   find-cycles
+   "So, my intution about how this SHOULD work was quite false -- in a graph where only one directed edge caused a cycle, this function returns all the members of the cycle, going in both directions -- I can see value in detecting the single connection that causes a cycle, but don't think this solution is ideal way to address the problem"
+   :in-type
+   quote
+   Loom.Digraph
+   :in
+   quote
+   :a
+   :b
+   :b
+   :c
+   :d
+   :c
+   :a
+   :d
+   :out
+   quote
+   :c
+   :b
+   :a
+   :b
+   :c
+   :a
+   :a
+   :c
+   :b
+   :todo
+   "Perhaps it would be more intuitive to output the cycles\n              in the format #{[:a :c] [:c :a]} — cycle pairs,\n              where :a -> :c creates a cycle and :c -> :a creates a cycle."
+   g
+   let
+   eventual
+   eventual-connections
+   g
+   ->>
+   eventual
+   map
+   fn
+   from
+   tos
+   from
+   ->>
+   tos
+   filter
+   fn
+   to
+   or
+   ->
+   eventual
+   get
+   to
+   get
+   from
+   nil?
+   not
+   ->
+   eventual
+   get
+   to
+   get
+   to
+   nil?
+   not
+   ->
+   eventual
+   get
+   from
+   get
+   from
+   nil?
+   not
+   into
+   remove
+   fn
+   from
+   tos
+   empty?
+   tos
+   into]},
+ find-defns
+ {:body
+  (defn
+   find-defns
+   [path]
+   (let
+    [code (file-path->code path) fn-sym (atom [])]
+    (postwalk
+     (fn
+      [x]
+      (println x)
+      (cond
+       (list? x)
+       (if
+        (= 'defn (first x))
+        (let [sym (second x)] (swap! fn-sym conj sym))))
+      x)
+     code)
+    @fn-sym)),
+  :atomic-components
+  [defn
+   find-defns
+   path
+   let
+   code
+   file-path->code
+   path
+   fn-sym
+   atom
+   postwalk
+   fn
+   x
+   println
+   x
+   cond
+   list?
+   x
+   if
+   =
+   quote
+   defn
+   first
+   x
+   let
+   sym
+   second
+   x
+   swap!
+   fn-sym
+   conj
+   sym
+   x
+   code
+   clojure.core/deref
+   fn-sym]},
+ is-text-file?
+ {:body
+  (defn
+   is-text-file?
+   {:test (is-text-file? "abce.txt")}
+   [file-name]
+   (.endsWith file-name ".txt")),
+  :atomic-components
+  [defn
+   is-text-file?
+   :test
+   is-text-file?
+   "abce.txt"
+   file-name
+   .endsWith
+   file-name
+   ".txt"]},
+ dropl
+ {:body
+  (defn
+   dropl
+   "Drop n elements from left end of a sequence. Eager"
+   [n s]
+   (cond (string? s) (subs s n (count s)))),
+  :atomic-components
+  [defn
+   dropl
+   "Drop n elements from left end of a sequence. Eager"
+   n
+   s
+   cond
+   string?
+   s
+   subs
+   s
+   n
+   count
+   s]},
+ ->atomic-components
+ {:body
+  (defn
+   ->atomic-components
+   {:tests '{(defn abc [a b] (+ 1 2)) [defn abc a b + 1 2]}}
+   [x]
+   (let
+    [atomic-components (atom [])]
+    (postwalk
+     (fn
+      [elem]
+      (when (atomic? elem) (swap! atomic-components conj elem)))
+     x)
+    @atomic-components)),
+  :atomic-components
+  [defn
+   ->atomic-components
+   :tests
+   quote
+   defn
+   abc
+   a
+   b
+   +
+   1
+   2
+   defn
+   abc
+   a
+   b
+   +
+   1
+   2
+   x
+   let
+   atomic-components
+   atom
+   postwalk
+   fn
+   elem
+   when
+   atomic?
+   elem
+   swap!
+   atomic-components
+   conj
+   elem
+   x
+   clojure.core/deref
+   atomic-components]},
+ dropr
+ {:body
+  (defn
+   dropr
+   "Drop n elements from right end of a sequence. Eager"
+   [n s]
+   (cond (string? s) (subs s 0 (- (count s) n)))),
+  :atomic-components
+  [defn
+   dropr
+   "Drop n elements from right end of a sequence. Eager"
+   n
+   s
+   cond
+   string?
+   s
+   subs
+   s
+   0
+   -
+   count
+   s
+   n]},
+ build-link-graph
+ {:body
+  (defn
+   build-link-graph
+   [files]
+   (->>
+    files
+    (map (fn [[n t]] [(str/upper-case n) (get-linkset t)]))
+    (into {})
+    g/digraph)),
+  :atomic-components
+  [defn
+   build-link-graph
+   files
+   ->>
+   files
+   map
+   fn
+   n
+   t
+   str/upper-case
+   n
+   get-linkset
+   t
+   into
+   g/digraph]},
+ file-name
+ {:body
+  (defn
+   file-name
+   {:test (file-name (first (file-seq (File. "nvalt-proto"))))}
+   [file-object]
+   (->> file-object .getName (dropr 4))),
+  :atomic-components
+  [defn
+   file-name
+   :test
+   file-name
+   first
+   file-seq
+   File.
+   "nvalt-proto"
+   file-object
+   ->>
+   file-object
+   .getName
+   dropr
+   4]},
+ shortest-paths
+ {:body
+  (defn
+   shortest-paths
+   {:in-types '{g Loom.Digraph, start Any},
+    :out-type 'Map,
+    :in '(g/digraph {:a #{:c :b}, :b #{}, :c #{:a}}),
+    :out '{:c (:a :c), :b (:a :b), :a nil}}
+   [g start]
+   (->>
+    g
+    :nodeset
+    (map (fn [node] [node (galg/shortest-path g start node)]))
+    (into {}))),
+  :atomic-components
+  [defn
+   shortest-paths
+   :in-types
+   quote
+   g
+   Loom.Digraph
+   start
+   Any
+   :out-type
+   quote
+   Map
+   :in
+   quote
+   g/digraph
+   :a
+   :c
+   :b
+   :b
+   :c
+   :a
+   :out
+   quote
+   :c
+   :a
+   :c
+   :b
+   :a
+   :b
+   :a
+   g
+   start
+   ->>
+   g
+   :nodeset
+   map
+   fn
+   node
+   node
+   galg/shortest-path
+   g
+   start
+   node
+   into]},
+ logger
+ {:body (defn logger [x] (do (pprint x)) x),
+  :atomic-components [defn logger x do pprint x x]},
+ get-linkset
+ {:body
+  (defn
+   get-linkset
+   [text]
+   (->>
+    text
+    link-seq
+    (map (comp remove-brackets str/upper-case))
+    set)),
+  :atomic-components
+  [defn
+   get-linkset
+   text
+   ->>
+   text
+   link-seq
+   map
+   comp
+   remove-brackets
+   str/upper-case
+   set]},
+ print-page
+ {:body
+  (defn
+   print-page
+   [{:keys [name text depth]}]
+   (str (header-stars depth) " " name " \n\t" text)),
+  :atomic-components
+  [defn
+   print-page
+   :keys
+   name
+   text
+   depth
+   str
+   header-stars
+   depth
+   " "
+   name
+   " \n\t"
+   text]}}
