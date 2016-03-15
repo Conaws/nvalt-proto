@@ -425,7 +425,7 @@
    whose vals contain @v."
   {:tests '{(-> smap
                 (->multigraph :children)
-                (ks-with-deep-v-in :a))
+                (keys-containing :a))
             [:b :c :d]}}
   [m v]
   (->> m
@@ -444,9 +444,9 @@
             :d {:children [:b :c :a] :parents [:a]      }}}}
   [m child-attr parent-attr]
   (let [multigraph (->multigraph m child-attr)]
-    (->> (for [va (keys multigraph)]
-           [va {:parents 
-                (keys-containing multigraph va)}])
+    (->> (for [k (keys multigraph)]
+           [k {:parents 
+                (keys-containing multigraph k)}])
          (into {})
          (merge-with conj smap)))
 
