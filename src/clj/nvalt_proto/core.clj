@@ -430,23 +430,50 @@
   [m v]
   (->> m
        (filter-vals (partial some #{v}))
-       (map first)
-       (into #{})))
+       (mapv first)))
 
 #_(def ^{:tests '{(inc-all [1 2 3])
                   [4 5 6]}}
   inc-all (partial map inc))
 
-(defn add-parents
-  {:test '{(add-parents smap :children :parents)
-           {:a {:children [:d]       :parents #{:b :c :d}}
-            :b {:children [:a]       :parents #{:c :d}   }
-            :c {:children [:b :a]    :parents #{:d}      }
-            :d {:children [:b :c :a] :parents #{:a}      }}}}
+(defn invert-multigraph
+  {:tests '{(invert-multigraph
+              {:a [:d]      
+               :b [:a]      
+               :c [:b :a]   
+               :d [:b :c :a]})
+            {:a [:b :c :d]
+             :b [:c :d]   
+             :c [:d]      
+             :d [:a]      }}}
+  [m]
+  (->> (for [k (keys m)]
+         [k (keys-containing m k)])
+       (into {})))
+
+(defn merge-inversion
+  "Transforms @m to a multigraph, inverts it, and
+   merges the result back into @m with the @parent-attr key."
+  {:test '{(merge-inversion smap :children :parents)
+           {:a {:children [:d]       :parents [:b :c :d]}
+            :b {:children [:a]       :parents [:c :d]   }
+            :c {:children [:b :a]    :parents [:d]      }
+            :d {:children [:b :c :a] :parents [:a]      }}}}
   [m child-attr parent-attr]
-  (let [multigraph (->multigraph m child-attr)]
-    (->> (for [k (keys multigraph)]
-           [k {:parents 
-                (keys-containing multigraph k)}])
-         (into {})
-         (merge-with conj smap))))
+  (->> m
+       (#(->multigraph % child-attr))
+       invert-multigraph
+       (map-vals #(hash-map parent-attr %))
+       (merge-with conj smap)))
+
+
+(defn add-parents [m] 
+  (merge-inversion m :children :parents))
+
+
+
+
+
+(add-parents smap)
+
+(map-vals #(hash-map :parents %) (->multigraph smap :children) )
