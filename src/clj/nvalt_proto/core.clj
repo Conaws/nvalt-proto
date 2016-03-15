@@ -3,7 +3,9 @@
             [loom.graph     :as g   ]
             [clojure.pprint :refer [pprint]]
             [clojure.string :as str]
-            [clojure.walk   :refer [postwalk]])
+            [clojure.walk   :refer [postwalk]]
+            [clojure.tools.namespace.repl
+              :refer [refresh refresh-all]])
   (:import java.io.File))
 
 ; ===== COLLECTIONS FUNCTIONS ===== ;
@@ -124,7 +126,7 @@
 
  (< 0 (count (re-matches (re-pattern (str ".txt" "$")) "abdc.txt")))
 
-(ends-with? ".txt" "abdc.txt")
+#_(ends-with? ".txt" "abdc.txt")
 
 
 (defn file-name 
@@ -305,7 +307,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(def thispath  "./src/clj/nvalt_proto/core.clj") 
+(def this-path  "./src/clj/nvalt_proto/core.clj") 
 
 (defn file-path->code [^String path]
   (binding [#_*read-eval* #_false]
@@ -326,9 +328,9 @@
       code)
     @fn-sym))
 
-(def thiscode (file-path->code thispath))
+;(def thiscode (file-path->code this-path))
 
-(find-defns thiscode)
+;(find-defns thiscode)
 
 (defn atomic?
   {:todo ["Might be simpler to just do (not (coll? x))"]}
@@ -378,7 +380,7 @@
     (read-string (str "(do " (slurp path) ")"))))
 
 
-(last (find-defns-and-vals "./src/clj/nvalt_proto/core.clj"))
+#_(last (find-defns-and-vals "./src/clj/nvalt_proto/core.clj"))
 
 
 
@@ -486,8 +488,89 @@
 
 (defn add-parents [m] 
   (merge-inversion m :children :parents))
- 
 
 
+; TODO [#A] Filter out the parameters 
+;  A transformation function which, given a defn or fn:
+;          1. Organizes the form into: <- easy
+;              {:doc       <docstring>
+;               :meta      <meta>
+;               :params    <params>
+;               :variadic? true|false
+;               :body     <body>}
+;          2. Keep only body <- easy
+;          3. Pull out (postwalk-filter) atomic (non-coll) elements, removing ones 
+
+(defmulti parse (fn [sym] sym))
+
+(defmacro fn-logic-base
+  [oper & preds]
+  (let [arg (gensym)]
+   `(fn [~arg]
+      (~oper ~@(for [pred preds]
+                 `(~pred ~arg))))))
+
+(defmacro fn-or
+  {:tests '{((fn-or string? seq? nil?) nil)
+            true
+            ((fn-or even? decimal?) 3)
+            false}}
+  [& preds]
+  `(fn-logic-base or ~@preds))
+
+(defn defn-variant-organizer
+  "Organizes the arguments for use for a |defn| variant.
+   Things like sym, meta, doc, etc."
+  [{:keys [sym doc meta body unknown params] :as props}]
+  (let [[first-unknown & rest-unknown] unknown]
+    (if first-unknown
+        (cond
+          (string? first-unknown) ; docstring found
+            (recur
+              (assoc props
+                :doc     first-unknown
+                :unknown rest-unknown))
+          (map? first-unknown) ; meta found
+            (recur
+              (assoc props
+                :meta    first-unknown
+                :unknown rest-unknown))
+          (vector? first-unknown) ; reached the params
+            (->  props
+                 (assoc
+                   :params first-unknown
+                   :body   rest-unknown)
+                 (dissoc :unknown))
+          :else
+            (throw (ex-info :illegal-argument
+                     {:msg   (str "Invalid arguments to |" sym "|.")
+                      :cause first-unknown
+                      :args  props}))))))
+
+(def fn-not complement)
+
+(defn parse-defn ;defmethod parse 'defn
+  {:tests '{(parse-defn '(defn abc [a b & c] (+ a b 2)))
+            {:sym    'abc
+             :params '[a b & c]
+             :body   '((+ 1 3))}}}
+  ([form]
+    (defn-variant-organizer {:sym     (second form)
+                             :unknown (-> form rest rest)})))
 
 
+(-> #'parse-defn meta :tests first first eval println)
+
+(defn defn->params
+  {:tests '{(defn->params '(defn abc [a b & c] (+ a b 2)))
+            '[a b & c]
+            (-> (find-defns-and-vals this-path)
+                (get 'ends-with?)
+                :body
+                defn->params)
+            '[pattern string]Go}}
+  [form]
+  (-> form parse-defn :params))
+
+; (defn remove-params-from-body [body params]
+;   (postwalk ))

@@ -25,6 +25,8 @@
                    [aysylu/loom                "0.5.4"       ] ; Latest 1/26/2015
                  ; ==== PRINT ====
                    [fipp                       "0.6.4"       ] ; Latest (as of 1/2/2016)
+                 ; ==== META ====
+                   [org.clojure/tools.namespace "0.2.11"] ; Latest (as of 3/15/2016)
                  ]
 
   :plugins [[lein-environ        "1.0.1"      ]
