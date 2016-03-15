@@ -430,7 +430,8 @@
   [m v]
   (->> m
        (filter-vals (partial some #{v}))
-       (mapv first)))
+       (map first)
+       (into #{})))
 
 #_(def ^{:tests '{(inc-all [1 2 3])
                   [4 5 6]}}
@@ -438,20 +439,14 @@
 
 (defn add-parents
   {:test '{(add-parents smap :children :parents)
-           {:a {:children [:d]       :parents [:b :c :d]}
-            :b {:children [:a]       :parents [:c :d]   }
-            :c {:children [:b :a]    :parents [:d]      }
-            :d {:children [:b :c :a] :parents [:a]      }}}}
+           {:a {:children [:d]       :parents #{:b :c :d}}
+            :b {:children [:a]       :parents #{:c :d}   }
+            :c {:children [:b :a]    :parents #{:d}      }
+            :d {:children [:b :c :a] :parents #{:a}      }}}}
   [m child-attr parent-attr]
   (let [multigraph (->multigraph m child-attr)]
     (->> (for [k (keys multigraph)]
            [k {:parents 
                 (keys-containing multigraph k)}])
          (into {})
-         (merge-with conj smap)))
-
-
-  #_(merge-with conj smap
-         (into {} (for [va (keys smap)]
-                    [va {:parents 
-                         (ks-with-deep-v-in smap parent-attr va)}]))))
+         (merge-with conj smap))))
