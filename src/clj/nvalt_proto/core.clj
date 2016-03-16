@@ -22,6 +22,7 @@
   (cond (string? s)
         (subs s 0 (- (count s) n))))
 
+
 ; ===== GRAPH FUNCTIONS ===== ;
 
 (defn shortest-paths
@@ -490,6 +491,54 @@
   (merge-inversion m :children :parents))
 
 
+;; regexs 
+
+
+(def test-sexp "(defn depths-from-node
+  [shortest-paths node]
+/* /  boom //
+
+//
+bdoom
+*//
+
+*//
+  (->> shortest-paths
+       (remove (fn [[to path]] (nil? path)))
+       (map    (fn [[to path]] [to (-> path count dec)]))
+       (into {})
+       (#(assoc % node 0))))")
+
+test-sexp
+
+(def first-in-sexp-re #"\(\S+") 
+
+(def word-re #"\w+")
+
+(def singleline-bracket-re #"\[.*\]")
+
+(def js-comments-no-newline #"//.*?//")
+
+(def comin-re #"\/\*[\s\S]*?\*\/")
+
+(def parameter-re #"\((?:defn|fn)[\s\S]*?\[(.*?)\]")
+
+(re-seq
+comin-re
+test-sexp)
+
+(map second
+(re-seq
+parameter-re
+test-sexp))
+
+(re-seq
+(re-pattern "\\w+")
+test-sexp)
+
+
+
+
 ; TODO [#A] Filter out the parameters 
 ;  A transformation function which, given a defn or fn:
 ;          1. Organizes the form into: <- easy
@@ -500,6 +549,8 @@
 ;               :body     <body>}
 ;          2. Keep only body <- easy
 ;          3. Pull out (postwalk-filter) atomic (non-coll) elements, removing ones 
+
+
 
 (defmulti parse (fn [sym] sym))
 
