@@ -9,6 +9,7 @@
                  [datascript                   "0.13.3"      ] ; Latest (as of 1/2/2016)
                  ; MISCELLANEOUS
                  [com.taoensso/sente           "1.7.0"       ] ; Latest (as of 9/1/2016)
+                 [org.clojure/core.async       "0.2.374"     ]
                  ; ===== FRONTEND =====
                  [org.clojure/clojurescript    "1.7.170"
                    :scope "provided"                         ]
@@ -27,6 +28,11 @@
                    [fipp                       "0.6.4"       ] ; Latest (as of 1/2/2016)
                  ; ==== META ====
                    [org.clojure/tools.namespace "0.2.11"] ; Latest (as of 3/15/2016)
+<<<<<<< HEAD
+=======
+                 ; HTTP
+                   [cljs-http                   "0.1.39"      ]
+>>>>>>> 1e6e88ffc53f7c6887f878881c0dc7c26cf9a06a
                  ]
 
   :plugins [[lein-environ        "1.0.1"      ]
@@ -97,13 +103,14 @@
 
                    :injections []
 
-                   :figwheel {:http-server-root "public"
-                              :server-port      3449
-                              :nrepl-port       7002
-                              :nrepl-middleware ["cemerick.piggieback/wrap-cljs-repl"]
+                   :figwheel {;:http-server-root "public"
+                              :server-port      3450
+                             ; :nrepl-port       7002
+                              ;:nrepl-middleware ["cemerick.piggieback/wrap-cljs-repl"]
 
-                              :css-dirs         ["resources/public/css"]
-                              :ring-handler     nvalt-proto.handler/app}
+                             ; :css-dirs         ["resources/public/css"]
+                            ;  :ring-handler     nvalt-proto.handler/app
+                            }
 
                    :env {:dev      true
                          :port     3500
@@ -113,13 +120,17 @@
                                                   :compiler {:main       "nvalt-proto.dev"
                                                              :source-map true}}
 
-                                        :dev {:source-paths ["src/cljs" "src/cljc" "env/dev/cljs"]
-                                              :figwheel     {:devcards true}
-                                              :compiler     {:main       "nvalt-proto.cards"
-                                                             :asset-path "js/devcards_out"
-                                                             :output-to  "target/cljsbuild/public/js/app_devcards.js"
-                                                             :output-dir "target/cljsbuild/public/js/devcards_out"
-                                                             :source-map-timestamp true}}
+                                        :dev {:figwheel true
+                                              :source-paths ["src/cljs" "src/cljc"
+                                                             ]
+                                              :compiler {:output-to            "resources/public/js/dev-compiled/dev.js"
+                                                         :output-dir           "resources/public/js/dev-compiled/out"
+                                                         :optimizations        :none
+                                                         :main                 nvalt-proto.cards
+                                                         :asset-path           "js/dev-compiled/out"
+                                                         :source-map           true
+                                                         :source-map-timestamp true
+                                                         :cache-analysis       true}}
                                         :devcards-compile
                                              {:source-paths ["env/dev/cljs"]
                                               :compiler {:main         "nvalt-proto.cards"

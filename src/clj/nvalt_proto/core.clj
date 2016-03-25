@@ -491,6 +491,7 @@ i(ns nvalt-proto.core
   (merge-inversion m :children :parents))
 
 
+<<<<<<< HEAD
 ;; regexs 
 
 
@@ -539,6 +540,8 @@ test-sexp)
 
 
 
+=======
+>>>>>>> 1e6e88ffc53f7c6887f878881c0dc7c26cf9a06a
 ; TODO [#A] Filter out the parameters 
 ;  A transformation function which, given a defn or fn:
 ;          1. Organizes the form into: <- easy
@@ -550,8 +553,11 @@ test-sexp)
 ;          2. Keep only body <- easy
 ;          3. Pull out (postwalk-filter) atomic (non-coll) elements, removing ones 
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 1e6e88ffc53f7c6887f878881c0dc7c26cf9a06a
 (defmulti parse (fn [sym] sym))
 
 (defmacro fn-logic-base
