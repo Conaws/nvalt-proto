@@ -1,4 +1,4 @@
-(ns nvalt-proto.core
+i(ns nvalt-proto.core
   (:require [loom.alg       :as galg]
             [loom.graph     :as g   ]
             [clojure.pprint :refer [pprint]]
@@ -502,7 +502,7 @@
 bdoom
 *//
 
-*//
+*//i
   (->> shortest-paths
        (remove (fn [[to path]] (nil? path)))
        (map    (fn [[to path]] [to (-> path count dec)]))
@@ -530,7 +530,7 @@ test-sexp)
 (map second
 (re-seq
 parameter-re
-test-sexp))
+test-sexp)
 
 (re-seq
 (re-pattern "\\w+")

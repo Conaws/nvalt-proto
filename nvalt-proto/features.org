@@ -47,7 +47,8 @@ It is possible, that rather than changing the title the note has in all of those
 * Alias Note
 Adding a different header which points to the same note, related to [[Cloning a Note]]
 * Cloning a Note
-* Create Context for Note Titles       :reading:typing:indentation:structure:
+ Create Context for Note Titles       :reading:typing:indentation:structure:
+
 <2016-03-15 Tue 03:32>
 
 When creating note titles -- you should be able to somehow specify the shared context between a number of links
