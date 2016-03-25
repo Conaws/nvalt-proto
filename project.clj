@@ -28,11 +28,8 @@
                    [fipp                       "0.6.4"       ] ; Latest (as of 1/2/2016)
                  ; ==== META ====
                    [org.clojure/tools.namespace "0.2.11"] ; Latest (as of 3/15/2016)
-<<<<<<< HEAD
-=======
                  ; HTTP
                    [cljs-http                   "0.1.39"      ]
->>>>>>> 1e6e88ffc53f7c6887f878881c0dc7c26cf9a06a
                  ]
 
   :plugins [[lein-environ        "1.0.1"      ]

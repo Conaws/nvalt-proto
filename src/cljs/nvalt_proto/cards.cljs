@@ -39,8 +39,22 @@
   lasti (comp dec count))
 
 (defn first-matching-category [category-type categories]
-  (let [to-find (re-pattern (str "Category:[0-9]?[0-9]?[0-9]?[0-9] " category-type))]
-    (ffilter (partial re-find to-find) categories)))
+  (let [to-find (re-pattern (str "Category:(\\d+) " category-type))]
+    (second (first (filter second (map (partial re-find to-find) categories))))))
+
+
+(def died (partial first-matching-category "deaths"))
+(def born (partial first-matching-category "births"))
+
+(->> @wiki
+     (map-vals wiki-results->category-titles)
+     (map-vals (juxt born died)))
+
+
+
+
+
+
 
 (defn extract-info-from-category [category-type category]
   (when category

@@ -262,3 +262,15 @@ notifying browser that file changed:  out/nvalt_proto/cards.js
 [0mCompiling "resources/public/js/dev-compiled/dev.js" from ["src/cljs" "src/cljc"]...
 notifying browser that file changed:  out/nvalt_proto/cards.js
 [32mSuccessfully compiled "resources/public/js/dev-compiled/dev.js" in 0.208 seconds.[0m
+[0mCompiling "resources/public/js/dev-compiled/dev.js" from ["src/cljs" "src/cljc"]...
+notifying browser that file changed:  resources/public/js/dev-compiled/out/goog/deps.js
+notifying browser that file changed:  resources/public/js/dev-compiled/out/cljs_deps.js
+notifying browser that file changed:  out/nvalt_proto/cards.js
+[32mSuccessfully compiled "resources/public/js/dev-compiled/dev.js" in 0.624 seconds.[0m
+[0mCompiling "resources/public/js/dev-compiled/dev.js" from ["src/cljs" "src/cljc"]...
+WARNING: Use of undeclared Var nvalt-proto.cards/re-match at line 43 /Users/conor/src/nvalt-proto/src/cljs/nvalt_proto/cards.cljs
+notifying browser that file changed:  out/nvalt_proto/cards.js
+[32mSuccessfully compiled "resources/public/js/dev-compiled/dev.js" in 0.516 seconds.[0m
+[0mCompiling "resources/public/js/dev-compiled/dev.js" from ["src/cljs" "src/cljc"]...
+notifying browser that file changed:  out/nvalt_proto/cards.js
+[32mSuccessfully compiled "resources/public/js/dev-compiled/dev.js" in 0.569 seconds.[0m
