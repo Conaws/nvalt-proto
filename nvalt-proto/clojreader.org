@@ -1,1 +1,274 @@
-* refile
+* Discussion
+
+  We could just chat in here if we want a record of our thinking
+  Sure, good idea
+
+  So 
+
+** What should the core namespace be
+   This is the general text parser, so I'd say 
+   
+*** juntolabs/parse-maps
+    I mean, the problem is that maps means something different for us than clojure -- kinda
+    The gneral purpose here is to take some form of knowledge in text
+    ie Code, or a directory, or later maybe a book, 
+    and convert it into a structure where someone can navigate it -- seeing the right piece at the right time, based on what they already understand
+
+    it isn't parse-edgemap, because its generating an edgemap from unstructured text
+
+    text-to-knowlegemap-parser 
+        
+    Maybe juntolabs/parse?
+    so juntolabs.parse.knowledge-map
+    And then the main function in there, to which all functions in that namespace are subordinate, would be something like text->knowledge-map
+    Then we might have other parsing functions
+    For instance, the Clojure parsing stuff we're doing might go in juntolabs.parse.clojure or something
+
+   Also, need a    [[General useful namespace]]
+
+
+    
+   
+*** General useful namespace 
+
+    Also we need to find a general useful functions namespace/set of namespaces
+    E.g. for dropl, dropr, map-vals, filter-keys, blah blah blah
+
+    Yes.  but do we want to keep having to reload another namespace whenever we add to that one?
+    
+**** I say we just have those in our main project for now....
+
+     Problem with that is that I want to start making a UI for this today, initially just by pasting in a edn-map spit out from the parser into a reagent project
+     
+     [[Reloaded Workflow]]
+     [[Setting up Reloaded Workflow]]
+
+** Reloaded Workflow
+   "[A]fter every significant code change, I want to restart the application from scratch. But I don't want to restart the JVM and reload all my Clojure code in order to do it: that takes too long and is too disruptive to my workflow. Instead, I want to design my application in such a way that I can quickly shut it down, discard any transient state it might have built up, start it again, and return to a similar state.""
+   So said Stuart Sierra. We can use his |reloaded| dependency and every time we save a file it'll intelligently determine which namespace(s) need reloading.
+   Then it'll reload it.
+   It saves a lot of time and then we won't have to copy-paste into the REPL.
+   That way having multiple namespaces won't be painful and will instead only have a positive effect on our productivity as we divide up functionality into more intelligble pieces / namespaces.
+   That said, for now, if we're starting the UI by today, we don't need to set up a "reloaded" workflow and we can just keep things where they are till we get to that point.
+   It's not hard to set it up and I can do it in probably 3 minutes — I already have a sort of template set up.
+   It's just requiring like one namespace and writing a two-line or so function
+   
+*** YES - if
+    You document the shit out of everything that is going on.  ;)     
+    It'll be flying everywhere ;)
+    
+    [[Setting up Reloaded Workflow]]
+
+
+* Meta Work
+** Setting up Reloaded Workflow
+ 
+ 
+
+*** Plan 1 :FALSIFIED:
+
+  CLOCK: [2016-03-16 Wed 00:25]--[2016-03-16 Wed 00:33] =>  0:08
+    
+
+
+    Boom -- lets get on it
+
+    start with saying what you're gonna
+
+    1. Add dependency in project.clj (15 sec max)
+    2. Go to Quantum and see how I did it (30 sec)
+    3. Paste and prune (~1-2 min)
+    4. Test (~1-2 min)
+ 
+*** Plan 2
+    CLOCK: [2016-03-16 Wed 00:44]--[2016-03-16 Wed 00:44] =>  0:00
+
+    We don’t actually have to use Component, surprisingly.
+    clojure.tools.namespace is independent of Component.
+    So theoretically we could use anything, including Mount.
+
+    ; Code example adapted from here: https://github.com/stuartsierra/reloaded/blob/master/src/leiningen/new/reloaded/templates/dev.clj
+    
+    ; A dummy fn for now. Will be useful when we use stateful systems a la Mount or Component.
+    (defn restart-system! [])
+
+    ; This fn reloads the current namespace. It will reload namespaces which it requires only if they need reloading (i.e. have been changed).
+    (defn reload! []
+  		(refresh :after `restart-system!))
+
+  	These functions should go in a dev namespace, e.g. juntolabs/dev and you can just stay in that namespace without having to require or reload anything manually from the REPL.
+
+  	Step 1:
+  	Copy the above fns into the REPL
+  	Step 2:
+  	Call (reload!) in the REPL
+
+  	And you're good!
+
+  	NOTE: Sometimes you might just have to resort to just (refresh) if reloading fails...
+  	  	  And in fact this is simpler anyway
+
+
+
+* CLJ Parser
+
+** Namespaces
+
+
+
+** TODO Dynamically generating learning in Clojure          :clojure:content:
+       <2016-03-15 Tue 04:15>
+
+*** Components
+
+**** DONE Walk a Clojure Project to get all the def's and defns
+       
+       check if list
+       check if def or defn
+
+
+**** DONE Walk each of those and grab all the words used in there
+
+       re-seq words, everything that is not () basically, every atomic element
+
+
+
+***** Identify which are the parameters
+       
+       filter out, into something different -- the paraments
+
+
+
+**** TODO Compare that with the lists of functions 
+
+       
+       Create a directed graph of all the functions used in a project
+                       or not 
+
+       Hello
+               ->
+               str
+
+       Hello Everybody
+               Hello 
+               map 
+
+
+
+***** TODO [#B] required at the top of the namespace
+
+       version 2
+
+
+***** TODO [#B] def'd throughout the project
+
+       
+
+***** TODO [#A] Filter out the parameters 
+       A transformation function which, given a defn or fn:
+               1. Organizes the form into: <- easy
+                   {:doc       <docstring>
+                    :meta      <meta>
+                    :params    <params>
+                    :variadic? true|false
+                    :body 	 	<body>}
+               2. Keep only body <- easy
+               3. Pull out (postwalk-filter) atomic (non-coll) elements, removing ones 
+                  
+
+
+
+**** Generate a List of all the functions in the project
+
+
+
+
+
+
+***** Clicking on a function reveals the functions it is made of
+
+
+***** Sort the list based on which things are required in more places
+
+       
+       Answer two questions:
+               1) 	What functions in this list, have this as a member  (count this)
+                       Topsort
+                               loom.alg.topsort
+               
+
+
+               2)  What functions are a member of this  (basically equivelt to size of func)
+
+
+
+
+               {:name ->
+                :used-by [Hello, Hello Everybody]
+
+                }
+
+
+***** On each function, show the number of component functions it has
+
+
+
+**** Generate a List of functions that you know
+
+***** Clicking a button on a function adds it to your list
+
+       ->
+               (click on this to add to my vocab)
+       juxt
+       map 
+       comp
+       partial 
+
+
+
+**** Show a ratio of "known to unknown" component functions
+
+       Set/intersetion of mylist & component functions
+
+
+
+***** It is possible to know a function without knowing its components :note:
+
+
+
+
+
+
+
+*** Other Projects 
+[[Import References From Grimoire]]
+
+*** Notes
+         
+         file-seq from ealier
+
+         pull it into clojure-format 
+                 Does it expand the macros?
+                         No
+                 read-string
+                         parses the string into s expressions 
+
+
+                         
+
+         read-str
+                 Grab all s-expressions starting with 
+
+
+
+         Find a function
+                 regex starts with (defn  .....   )\n\n  		  
+
+                 unless defmacro 
+
+
+                 reseq /\b.*\b/
+
+
+** Import References From Grimoire
+<2016-03-15 Tue 04:44>

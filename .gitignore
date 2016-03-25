@@ -2,3 +2,5 @@ orgmap/
 nvalt/
 
 /target/*
+*-init.clj
+/resources/public/js/dev-compiled/*

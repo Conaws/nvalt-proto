@@ -3,7 +3,9 @@
             [loom.graph     :as g   ]
             [clojure.pprint :refer [pprint]]
             [clojure.string :as str]
-            [clojure.walk   :refer [postwalk]])
+            [clojure.walk   :refer [postwalk]]
+            [clojure.tools.namespace.repl
+              :refer [refresh refresh-all]])
   (:import java.io.File))
 
 ; ===== COLLECTIONS FUNCTIONS ===== ;
@@ -124,7 +126,7 @@
 
  (< 0 (count (re-matches (re-pattern (str ".txt" "$")) "abdc.txt")))
 
-(ends-with? ".txt" "abdc.txt")
+#_(ends-with? ".txt" "abdc.txt")
 
 
 (defn file-name 
@@ -305,8 +307,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; 
-
+(def this-path  "./src/clj/nvalt_proto/core.clj") 
 
 (defn file-path->code [^String path]
   (binding [#_*read-eval* #_false]
@@ -326,6 +327,10 @@
         x)
       code)
     @fn-sym))
+
+;(def thiscode (file-path->code this-path))
+
+;(find-defns thiscode)
 
 (defn atomic?
   {:todo ["Might be simpler to just do (not (coll? x))"]}
@@ -374,246 +379,198 @@
   (binding [#_*read-eval* #_false]
     (read-string (str "(do " (slurp path) ")"))))
 
-; RESULT:
 
-#_(comment (do
-   (ns
-    nvalt-proto.core
-    (:require
-     [loom.alg :as galg]
-     [loom.graph :as g]
-     [clojure.pprint :refer [pprint]]
-     [clojure.string :as str])
-    (:import java.io.File))
-   (defn
-    dropl
-    "Drop n elements from left end of a sequence. Eager"
-    [n s]
-    (cond (string? s) (subs s n (count s))))
-   (defn
-    dropr
-    "Drop n elements from right end of a sequence. Eager"
-    [n s]
-    (cond (string? s) (subs s 0 (- (count s) n))))
-   (defn
-    shortest-paths
-    {:in-types '{g Loom.Digraph, start Any},
-     :out-type 'Map,
-     :in '(g/digraph {:a #{:c :b}, :b #{}, :c #{:a}}),
-     :out '{:c (:a :c), :b (:a :b), :a nil}}
-    [g start]
-    (->>
-     g
-     :nodeset
-     (map (fn [node] [node (galg/shortest-path g start node)]))
-     (into {})))
-   (defn
-    eventual-connections
-    "All pairs of nodes which eventually connect.\n   Calculated via Johnson's algorithm."
-    [g]
-    (->>
-     g
-     galg/johnson
-     (map
-      (fn
-       [[from tos]]
-       [from (->> tos vals (apply merge) keys (into #{}))]))
-     (remove (fn [[from tos]] (empty? tos)))
-     (into {})))
-   (defn
-    find-cycles
-    "So, my intution about how this SHOULD work was quite false -- in a graph where only one directed edge caused a cycle, this function returns all the members of the cycle, going in both directions -- I can see value in detecting the single connection that causes a cycle, but don't think this solution is ideal way to address the problem"
-    {:in-type 'Loom.Digraph,
-     :in '{:a #{:b}, :b #{:c :d}, :c #{:a}, :d #{}},
-     :out '{:c #{:b :a}, :b #{:c :a}, :a #{:c :b}},
-     :todo
-     ["Perhaps it would be more intuitive to output the cycles\n              in the format #{[:a :c] [:c :a]} — cycle pairs,\n              where :a -> :c creates a cycle and :c -> :a creates a cycle."]}
-    [g]
-    (let
-     [eventual (eventual-connections g)]
-     (->>
-      eventual
-      (map
-       (fn
-        [[from tos]]
-        [from
-         (->>
-          tos
-          (filter
-           (fn
-            [to]
-            (or
-             (-> eventual (get to) (get from) nil? not)
-             (-> eventual (get to) (get to) nil? not)
-             (-> eventual (get from) (get from) nil? not))))
-          (into #{}))]))
-      (remove (fn [[from tos]] (empty? tos)))
-      (into {}))))
-   (declare build-link-graph read-files)
-   (defn
-    depths-from-node
-    [shortest-paths node]
-    (->>
-     shortest-paths
-     (remove (fn [[to path]] (nil? path)))
-     (map (fn [[to path]] [to (-> path count dec)]))
-     (into {})
-     ((fn* [p1__3039#] (assoc p1__3039# node 0)))))
-   (defn
-    is-text-file?
-    {:test (is-text-file? "abce.txt")}
-    [file-name]
-    (.endsWith file-name ".txt"))
-   (match (re-pattern (str ".txt" "$")) "abc.txt")
-   (defn
-    ends-with?
-    [pattern string]
-    (< 0 (count (re-matches (re-pattern (str pattern "$")) string))))
-   (< 0 (count (re-matches (re-pattern (str ".txt" "$")) "abdc.txt")))
-   (ends-with? ".txt" "abdc.txt")
-   (defn
-    file-name
-    {:test (file-name (first (file-seq (File. "nvalt-proto"))))}
-    [file-object]
-    (->> file-object .getName (dropr 4)))
-   (def file-to-vec (partial (juxt file-name slurp)))
-   (defn
-    read-files
-    [path]
-    (->>
-     path
-     (File.)
-     file-seq
-     (filter (fn* [p1__3040#] (is-text-file? (str p1__3040#))))
-     (map file-to-vec)))
-   (def
-    remove-brackets
-    (fn* [p1__3041#] (->> p1__3041# (dropl 2) (dropr 2))))
-   (def link-seq (partial re-seq #"\[\[.+?\]\]"))
-   (defn
-    get-linkset
-    [text]
-    (->> text link-seq (map (comp remove-brackets str/upper-case)) set))
-   (defn
-    build-link-graph
-    [files]
-    (->>
-     files
-     (map (fn [[n t]] [(str/upper-case n) (get-linkset t)]))
-     (into {})
-     g/digraph))
-   (defn
-    tests
-    []
-    (let
-     [files
-      (read-files "./nvalt-proto")
-      graph
-      (build-link-graph files)
-      root-node
-      "FEATURES"
-      shortest-paths-from-root-node
-      (->>
-       (shortest-paths graph root-node)
-       (remove (fn [[to path]] (nil? path)))
-       (into {}))
-      depths-from-root-node
-      (depths-from-node graph root-node)
-      cycles-from-root
-      (->>
-       graph
-       find-cycles
-       (filter
-        (fn [[from tos]] (contains? shortest-paths-from-root-node from)))
-       (into {}))
-      replaced
-      (treeify-with-content
-       shortest-paths-from-root-node
-       cycles-from-root
-       files)
-      _
-      (pprint replaced)]
-     graph))
-   (defn logger [x] (do (pprint x)) x)
-   (defn header-stars [depth] (apply str (repeat depth "*")))
-   (defn
-    print-page
-    [{:keys [name text depth]}]
-    (str (header-stars depth) " " name " \n\t" text))
-   (defn
-    fileout
-    [target file]
-    (->>
-     file
-     (zipmap [:name :text])
-     (merge {:depth 1})
-     ((fn* [p1__3042#] (spit target p1__3042# :append true)))))
-   (defn
-    org-from-nvalt
-    [target dir]
-    (map (partial fileout target) (read-files dir)))
-   (defn mypath [] (-> (java.io.File. ".") .getAbsolutePath))
-   (defn
-    clojreader
-    [path]
-    (let
-     [code
-      (binding
-       [*read-eval* false]
-       (read-string (str "(do " (slurp path) ")")))]))
-   (defn a [x y] (+ 1 3) () .)
-   (=
-    (clojreader "./src/clj/nvalt_proto/core.clj")
-    [{'mypath
-      '(defn mypath [] (-> (java.io.File. ".") .getAbsolutePath))}])
-   (let
-    [path "./src/clj/nvalt_proto/core.clj"]
-    (binding [] (read-string (str "(do " (slurp path) ")"))))))
+#_(last (find-defns-and-vals "./src/clj/nvalt_proto/core.clj"))
 
-; RESULT
 
-#_[dropl
-   dropr
-   shortest-paths
-   eventual-connections
-   find-cycles
-   depths-from-node
-   is-text-file?
-   ends-with?
-   file-name
-   read-files
-   get-linkset
-   build-link-graph
-   tests
-   logger
-   header-stars
-   print-page
-   fileout
-   org-from-nvalt
-   mypath
-   file-path->code
-   clojreader
-   a
-   mypath
-   dropl
-   dropr
-   shortest-paths
-   eventual-connections
-   find-cycles
-   depths-from-node
-   is-text-file?
-   ends-with?
-   file-name
-   read-files
-   get-linkset
-   build-link-graph
-   tests
-   logger
-   header-stars
-   print-page
-   fileout
-   org-from-nvalt
-   mypath
-   clojreader
-   a
- mypath]
+
+
+;(find-references-in-map [m attr])
+
+
+
+(def smap ; sample "directed graph"
+  {:a {:children [:d]}
+   :b {:children [:a]}
+   :c {:children [:b :a]}
+   :d {:children [:b :c :a :a]}})
+
+(defn map-vals [f coll]
+  (map (fn [[k v]] [k (f v)]) coll))
+
+(defn map-keys [f coll]
+  (map (fn [[k v]] [(f k) v]) coll))
+
+(defn filter-vals [pred coll]
+  (filter (fn [[k v]] (pred v)) coll))
+
+(defn filter-keys [pred coll]
+  (filter (fn [[k v]] (pred k)) coll))
+
+
+
+
+
+(defn ->multigraph
+  {:tests '{(->multigraph smap :children)
+            {:a [:d]
+             :b [:a]
+             :c [:b :a]
+             :d [:b :c :a :a]}}}
+  [m k]
+  (->> m
+       (map-vals k)
+       (into {})))
+
+(defn keys-containing
+  "Takes a multigraph @m and returns all keys
+   whose vals contain @v."
+  {:tests '{(-> smap
+                (->multigraph :children)
+                (keys-containing :a))
+            [:b :c :d]}}
+  [m v]
+  (->> m
+       (filter-vals (partial some #{v}))
+       (mapv first)))
+
+#_(def ^{:tests '{(inc-all [1 2 3])
+                  [4 5 6]}}
+  inc-all (partial map inc))
+
+(defn invert-multigraph
+  {:tests '{(invert-multigraph
+              {:a [:d]      
+               :b [:a]      
+               :c [:b :a]   
+               :d [:b :c :a]})
+            {:a [:b :c :d]
+             :b [:c :d]   
+             :c [:d]      
+             :d [:a]      }}}
+  [m]
+  (->> (for [k (keys m)]
+         [k (keys-containing m k)])
+       (into {})))
+
+
+
+(defn update-map [m f] 
+  (reduce-kv (fn [m k v] 
+    (assoc m k (f v))) {} m))
+
+
+
+
+
+(def
+  ^{:doc "adding another value in to make sure doesn't override"}
+  newmap 
+  (reduce-kv (fn [m k v] 
+               (assoc m k (assoc v :count 1))) {} smap))
+
+
+(defn merge-inversion
+  "Transforms @m to a multigraph, inverts it, and
+   merges the result back into @m with the @parent-attr key."
+  {:test '{(merge-inversion smap :children :parents)
+           {:a {:children [:d]       :parents [:b :c :d]}
+            :b {:children [:a]       :parents [:c :d]   }
+            :c {:children [:b :a]    :parents [:d]      }
+            :d {:children [:b :c :a] :parents [:a]      }}}}
+  [m child-attr parent-attr]
+  (->> m
+       (#(->multigraph % child-attr))
+       invert-multigraph
+       (map-vals #(hash-map parent-attr %))
+       (merge-with conj m)))
+
+
+(defn add-parents [m] 
+  (merge-inversion m :children :parents))
+
+
+; TODO [#A] Filter out the parameters 
+;  A transformation function which, given a defn or fn:
+;          1. Organizes the form into: <- easy
+;              {:doc       <docstring>
+;               :meta      <meta>
+;               :params    <params>
+;               :variadic? true|false
+;               :body     <body>}
+;          2. Keep only body <- easy
+;          3. Pull out (postwalk-filter) atomic (non-coll) elements, removing ones 
+
+(defmulti parse (fn [sym] sym))
+
+(defmacro fn-logic-base
+  [oper & preds]
+  (let [arg (gensym)]
+   `(fn [~arg]
+      (~oper ~@(for [pred preds]
+                 `(~pred ~arg))))))
+
+(defmacro fn-or
+  {:tests '{((fn-or string? seq? nil?) nil)
+            true
+            ((fn-or even? decimal?) 3)
+            false}}
+  [& preds]
+  `(fn-logic-base or ~@preds))
+
+(defn defn-variant-organizer
+  "Organizes the arguments for use for a |defn| variant.
+   Things like sym, meta, doc, etc."
+  [{:keys [sym doc meta body unknown params] :as props}]
+  (let [[first-unknown & rest-unknown] unknown]
+    (if first-unknown
+        (cond
+          (string? first-unknown) ; docstring found
+            (recur
+              (assoc props
+                :doc     first-unknown
+                :unknown rest-unknown))
+          (map? first-unknown) ; meta found
+            (recur
+              (assoc props
+                :meta    first-unknown
+                :unknown rest-unknown))
+          (vector? first-unknown) ; reached the params
+            (->  props
+                 (assoc
+                   :params first-unknown
+                   :body   rest-unknown)
+                 (dissoc :unknown))
+          :else
+            (throw (ex-info :illegal-argument
+                     {:msg   (str "Invalid arguments to |" sym "|.")
+                      :cause first-unknown
+                      :args  props}))))))
+
+(def fn-not complement)
+
+(defn parse-defn ;defmethod parse 'defn
+  {:tests '{(parse-defn '(defn abc [a b & c] (+ a b 2)))
+            {:sym    'abc
+             :params '[a b & c]
+             :body   '((+ 1 3))}}}
+  ([form]
+    (defn-variant-organizer {:sym     (second form)
+                             :unknown (-> form rest rest)})))
+
+
+(-> #'parse-defn meta :tests first first eval println)
+
+(defn defn->params
+  {:tests '{(defn->params '(defn abc [a b & c] (+ a b 2)))
+            '[a b & c]
+            (-> (find-defns-and-vals this-path)
+                (get 'ends-with?)
+                :body
+                defn->params)
+            '[pattern string]Go}}
+  [form]
+  (-> form parse-defn :params))
+
+; (defn remove-params-from-body [body params]
+;   (postwalk ))

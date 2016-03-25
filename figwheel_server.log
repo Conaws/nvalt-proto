@@ -1,0 +1,264 @@
+[0mCompiling "resources/public/js/dev-compiled/dev.js" from ["src/cljs" "src/cljc"]...
+[31mCompiling "resources/public/js/dev-compiled/dev.js" failed.
+[0mclojure.lang.ExceptionInfo: Library name must be specified as a symbol in :require / :require-macros; offending spec: [] at line 1 src/cljs/nvalt_proto/cards.cljs
+ at clojure.core$ex_info.invoke (core.clj:4593)
+    cljs.analyzer$error.invoke (analyzer.cljc:568)
+    cljs.analyzer$error.invoke (analyzer.cljc:566)
+    cljs.analyzer$basic_validate_ns_spec.invoke (analyzer.cljc:1693)
+    cljs.analyzer$parse_require_spec.invoke (analyzer.cljc:1739)
+    clojure.lang.AFn.applyToHelper (AFn.java:171)
+    clojure.lang.AFn.applyTo (AFn.java:144)
+    clojure.core$apply.invoke (core.clj:636)
+    clojure.core$partial$fn__4533.doInvoke (core.clj:2512)
+    clojure.lang.RestFn.invoke (RestFn.java:408)
+    clojure.core$map$fn__4553.invoke (core.clj:2624)
+    clojure.lang.LazySeq.sval (LazySeq.java:40)
+    clojure.lang.LazySeq.seq (LazySeq.java:49)
+    clojure.lang.Cons.next (Cons.java:39)
+    clojure.lang.RT.boundedLength (RT.java:1742)
+    clojure.lang.RestFn.applyTo (RestFn.java:130)
+    clojure.core$apply.invoke (core.clj:634)
+    cljs.analyzer$eval1649$fn__1651$fn__1656.invoke (analyzer.cljc:1926)
+    clojure.core.protocols/fn (protocols.clj:167)
+    clojure.core.protocols$fn__6478$G__6473__6487.invoke (protocols.clj:19)
+    clojure.core.protocols$seq_reduce.invoke (protocols.clj:31)
+    clojure.core.protocols/fn (protocols.clj:101)
+    clojure.core.protocols$fn__6452$G__6447__6465.invoke (protocols.clj:13)
+    clojure.core$reduce.invoke (core.clj:6519)
+    cljs.analyzer$eval1649$fn__1651.invoke (analyzer.cljc:1909)
+    clojure.lang.MultiFn.invoke (MultiFn.java:251)
+    cljs.analyzer$analyze_seq_STAR_.invoke (analyzer.cljc:2390)
+    cljs.analyzer$analyze_seq_STAR__wrap.invoke (analyzer.cljc:2395)
+    cljs.analyzer$analyze_seq.invoke (analyzer.cljc:2416)
+    cljs.analyzer$analyze_form.invoke (analyzer.cljc:2525)
+[32mSuccessfully compiled "resources/public/js/dev-compiled/dev.js" in 0.067 seconds.[0m
+[0mCompiling "resources/public/js/dev-compiled/dev.js" from ["src/cljs" "src/cljc"]...
+notifying browser that file changed:  resources/public/js/dev-compiled/out/goog/deps.js
+notifying browser that file changed:  resources/public/js/dev-compiled/out/cljs_deps.js
+notifying browser that file changed:  out/nvalt_proto/cards.js
+[32mSuccessfully compiled "resources/public/js/dev-compiled/dev.js" in 0.514 seconds.[0m
+[0mCompiling "resources/public/js/dev-compiled/dev.js" from ["src/cljs" "src/cljc"]...
+WARNING: uuid already refers to: cljs.core/uuid being replaced by: cognitect.transit/uuid at line 323 resources/public/js/dev-compiled/out/cognitect/transit.cljs
+notifying browser that file changed:  resources/public/js/dev-compiled/out/cljs_deps.js
+notifying browser that file changed:  out/nvalt_proto/cards.js
+[32mSuccessfully compiled "resources/public/js/dev-compiled/dev.js" in 1.462 seconds.[0m
+[0mCompiling "resources/public/js/dev-compiled/dev.js" from ["src/cljs" "src/cljc"]...
+notifying browser that file changed:  out/nvalt_proto/cards.js
+[32mSuccessfully compiled "resources/public/js/dev-compiled/dev.js" in 0.248 seconds.[0m
+[0mCompiling "resources/public/js/dev-compiled/dev.js" from ["src/cljs" "src/cljc"]...
+notifying browser that file changed:  resources/public/js/dev-compiled/out/goog/deps.js
+notifying browser that file changed:  resources/public/js/dev-compiled/out/cljs_deps.js
+notifying browser that file changed:  out/nvalt_proto/cards.js
+[32mSuccessfully compiled "resources/public/js/dev-compiled/dev.js" in 0.735 seconds.[0m
+[0mCompiling "resources/public/js/dev-compiled/dev.js" from ["src/cljs" "src/cljc"]...
+notifying browser that file changed:  out/nvalt_proto/cards.js
+[32mSuccessfully compiled "resources/public/js/dev-compiled/dev.js" in 0.591 seconds.[0m
+[0mCompiling "resources/public/js/dev-compiled/dev.js" from ["src/cljs" "src/cljc"]...
+notifying browser that file changed:  out/nvalt_proto/cards.js
+[32mSuccessfully compiled "resources/public/js/dev-compiled/dev.js" in 0.828 seconds.[0m
+[0mCompiling "resources/public/js/dev-compiled/dev.js" from ["src/cljs" "src/cljc"]...
+notifying browser that file changed:  out/nvalt_proto/cards.js
+[32mSuccessfully compiled "resources/public/js/dev-compiled/dev.js" in 0.864 seconds.[0m
+[0mCompiling "resources/public/js/dev-compiled/dev.js" from ["src/cljs" "src/cljc"]...
+notifying browser that file changed:  out/nvalt_proto/cards.js
+[32mSuccessfully compiled "resources/public/js/dev-compiled/dev.js" in 0.412 seconds.[0m
+[0mCompiling "resources/public/js/dev-compiled/dev.js" from ["src/cljs" "src/cljc"]...
+notifying browser that file changed:  out/nvalt_proto/cards.js
+[32mSuccessfully compiled "resources/public/js/dev-compiled/dev.js" in 0.603 seconds.[0m
+[0mCompiling "resources/public/js/dev-compiled/dev.js" from ["src/cljs" "src/cljc"]...
+notifying browser that file changed:  out/nvalt_proto/cards.js
+[32mSuccessfully compiled "resources/public/js/dev-compiled/dev.js" in 0.289 seconds.[0m
+[0mCompiling "resources/public/js/dev-compiled/dev.js" from ["src/cljs" "src/cljc"]...
+notifying browser that file changed:  out/nvalt_proto/cards.js
+[32mSuccessfully compiled "resources/public/js/dev-compiled/dev.js" in 0.492 seconds.[0m
+[0mCompiling "resources/public/js/dev-compiled/dev.js" from ["src/cljs" "src/cljc"]...
+notifying browser that file changed:  out/nvalt_proto/cards.js
+[32mSuccessfully compiled "resources/public/js/dev-compiled/dev.js" in 0.393 seconds.[0m
+[0mCompiling "resources/public/js/dev-compiled/dev.js" from ["src/cljs" "src/cljc"]...
+notifying browser that file changed:  out/nvalt_proto/cards.js
+[32mSuccessfully compiled "resources/public/js/dev-compiled/dev.js" in 0.513 seconds.[0m
+[0mCompiling "resources/public/js/dev-compiled/dev.js" from ["src/cljs" "src/cljc"]...
+notifying browser that file changed:  out/nvalt_proto/cards.js
+[32mSuccessfully compiled "resources/public/js/dev-compiled/dev.js" in 1.023 seconds.[0m
+[0mCompiling "resources/public/js/dev-compiled/dev.js" from ["src/cljs" "src/cljc"]...
+notifying browser that file changed:  out/nvalt_proto/cards.js
+[32mSuccessfully compiled "resources/public/js/dev-compiled/dev.js" in 0.471 seconds.[0m
+[0mCompiling "resources/public/js/dev-compiled/dev.js" from ["src/cljs" "src/cljc"]...
+notifying browser that file changed:  out/nvalt_proto/cards.js
+[32mSuccessfully compiled "resources/public/js/dev-compiled/dev.js" in 0.357 seconds.[0m
+[0mCompiling "resources/public/js/dev-compiled/dev.js" from ["src/cljs" "src/cljc"]...
+notifying browser that file changed:  out/nvalt_proto/cards.js
+[32mSuccessfully compiled "resources/public/js/dev-compiled/dev.js" in 0.467 seconds.[0m
+[0mCompiling "resources/public/js/dev-compiled/dev.js" from ["src/cljs" "src/cljc"]...
+notifying browser that file changed:  out/nvalt_proto/cards.js
+[32mSuccessfully compiled "resources/public/js/dev-compiled/dev.js" in 0.599 seconds.[0m
+[0mCompiling "resources/public/js/dev-compiled/dev.js" from ["src/cljs" "src/cljc"]...
+notifying browser that file changed:  out/nvalt_proto/cards.js
+[32mSuccessfully compiled "resources/public/js/dev-compiled/dev.js" in 0.243 seconds.[0m
+[0mCompiling "resources/public/js/dev-compiled/dev.js" from ["src/cljs" "src/cljc"]...
+notifying browser that file changed:  out/nvalt_proto/cards.js
+[32mSuccessfully compiled "resources/public/js/dev-compiled/dev.js" in 0.249 seconds.[0m
+[0mCompiling "resources/public/js/dev-compiled/dev.js" from ["src/cljs" "src/cljc"]...
+notifying browser that file changed:  out/nvalt_proto/cards.js
+[32mSuccessfully compiled "resources/public/js/dev-compiled/dev.js" in 0.222 seconds.[0m
+[0mCompiling "resources/public/js/dev-compiled/dev.js" from ["src/cljs" "src/cljc"]...
+notifying browser that file changed:  out/nvalt_proto/cards.js
+[32mSuccessfully compiled "resources/public/js/dev-compiled/dev.js" in 0.281 seconds.[0m
+[0mCompiling "resources/public/js/dev-compiled/dev.js" from ["src/cljs" "src/cljc"]...
+notifying browser that file changed:  out/nvalt_proto/cards.js
+[32mSuccessfully compiled "resources/public/js/dev-compiled/dev.js" in 0.22 seconds.[0m
+[0mCompiling "resources/public/js/dev-compiled/dev.js" from ["src/cljs" "src/cljc"]...
+notifying browser that file changed:  out/nvalt_proto/cards.js
+[32mSuccessfully compiled "resources/public/js/dev-compiled/dev.js" in 0.245 seconds.[0m
+[0mCompiling "resources/public/js/dev-compiled/dev.js" from ["src/cljs" "src/cljc"]...
+notifying browser that file changed:  out/nvalt_proto/cards.js
+[32mSuccessfully compiled "resources/public/js/dev-compiled/dev.js" in 0.288 seconds.[0m
+[0mCompiling "resources/public/js/dev-compiled/dev.js" from ["src/cljs" "src/cljc"]...
+notifying browser that file changed:  out/nvalt_proto/cards.js
+[32mSuccessfully compiled "resources/public/js/dev-compiled/dev.js" in 0.311 seconds.[0m
+[0mCompiling "resources/public/js/dev-compiled/dev.js" from ["src/cljs" "src/cljc"]...
+notifying browser that file changed:  out/nvalt_proto/cards.js
+[32mSuccessfully compiled "resources/public/js/dev-compiled/dev.js" in 0.231 seconds.[0m
+[0mCompiling "resources/public/js/dev-compiled/dev.js" from ["src/cljs" "src/cljc"]...
+notifying browser that file changed:  out/nvalt_proto/cards.js
+[32mSuccessfully compiled "resources/public/js/dev-compiled/dev.js" in 0.21 seconds.[0m
+[0mCompiling "resources/public/js/dev-compiled/dev.js" from ["src/cljs" "src/cljc"]...
+notifying browser that file changed:  out/nvalt_proto/cards.js
+[32mSuccessfully compiled "resources/public/js/dev-compiled/dev.js" in 0.223 seconds.[0m
+[0mCompiling "resources/public/js/dev-compiled/dev.js" from ["src/cljs" "src/cljc"]...
+notifying browser that file changed:  out/nvalt_proto/cards.js
+[32mSuccessfully compiled "resources/public/js/dev-compiled/dev.js" in 0.266 seconds.[0m
+[0mCompiling "resources/public/js/dev-compiled/dev.js" from ["src/cljs" "src/cljc"]...
+notifying browser that file changed:  out/nvalt_proto/cards.js
+[32mSuccessfully compiled "resources/public/js/dev-compiled/dev.js" in 0.253 seconds.[0m
+[0mCompiling "resources/public/js/dev-compiled/dev.js" from ["src/cljs" "src/cljc"]...
+notifying browser that file changed:  out/nvalt_proto/cards.js
+[32mSuccessfully compiled "resources/public/js/dev-compiled/dev.js" in 0.282 seconds.[0m
+[0mCompiling "resources/public/js/dev-compiled/dev.js" from ["src/cljs" "src/cljc"]...
+notifying browser that file changed:  out/nvalt_proto/cards.js
+[32mSuccessfully compiled "resources/public/js/dev-compiled/dev.js" in 0.208 seconds.[0m
+[0mCompiling "resources/public/js/dev-compiled/dev.js" from ["src/cljs" "src/cljc"]...
+notifying browser that file changed:  out/nvalt_proto/cards.js
+[32mSuccessfully compiled "resources/public/js/dev-compiled/dev.js" in 0.243 seconds.[0m
+[0mCompiling "resources/public/js/dev-compiled/dev.js" from ["src/cljs" "src/cljc"]...
+notifying browser that file changed:  out/nvalt_proto/cards.js
+[32mSuccessfully compiled "resources/public/js/dev-compiled/dev.js" in 0.268 seconds.[0m
+[0mCompiling "resources/public/js/dev-compiled/dev.js" from ["src/cljs" "src/cljc"]...
+notifying browser that file changed:  out/nvalt_proto/cards.js
+[32mSuccessfully compiled "resources/public/js/dev-compiled/dev.js" in 0.338 seconds.[0m
+[0mCompiling "resources/public/js/dev-compiled/dev.js" from ["src/cljs" "src/cljc"]...
+notifying browser that file changed:  out/nvalt_proto/cards.js
+[32mSuccessfully compiled "resources/public/js/dev-compiled/dev.js" in 0.283 seconds.[0m
+[0mCompiling "resources/public/js/dev-compiled/dev.js" from ["src/cljs" "src/cljc"]...
+notifying browser that file changed:  out/nvalt_proto/cards.js
+[32mSuccessfully compiled "resources/public/js/dev-compiled/dev.js" in 0.446 seconds.[0m
+[0mCompiling "resources/public/js/dev-compiled/dev.js" from ["src/cljs" "src/cljc"]...
+notifying browser that file changed:  out/nvalt_proto/cards.js
+[32mSuccessfully compiled "resources/public/js/dev-compiled/dev.js" in 0.404 seconds.[0m
+[0mCompiling "resources/public/js/dev-compiled/dev.js" from ["src/cljs" "src/cljc"]...
+notifying browser that file changed:  out/nvalt_proto/cards.js
+[32mSuccessfully compiled "resources/public/js/dev-compiled/dev.js" in 0.354 seconds.[0m
+[0mCompiling "resources/public/js/dev-compiled/dev.js" from ["src/cljs" "src/cljc"]...
+notifying browser that file changed:  resources/public/js/dev-compiled/out/goog/deps.js
+notifying browser that file changed:  resources/public/js/dev-compiled/out/cljs_deps.js
+notifying browser that file changed:  out/nvalt_proto/cards.js
+[32mSuccessfully compiled "resources/public/js/dev-compiled/dev.js" in 0.416 seconds.[0m
+[0mCompiling "resources/public/js/dev-compiled/dev.js" from ["src/cljs" "src/cljc"]...
+notifying browser that file changed:  out/nvalt_proto/cards.js
+[32mSuccessfully compiled "resources/public/js/dev-compiled/dev.js" in 0.223 seconds.[0m
+[0mCompiling "resources/public/js/dev-compiled/dev.js" from ["src/cljs" "src/cljc"]...
+notifying browser that file changed:  out/nvalt_proto/cards.js
+[32mSuccessfully compiled "resources/public/js/dev-compiled/dev.js" in 0.239 seconds.[0m
+[0mCompiling "resources/public/js/dev-compiled/dev.js" from ["src/cljs" "src/cljc"]...
+WARNING: Use of undeclared Var nvalt-proto.cards/v at line 36 /Users/alexandergunnarson/Development/Source Code Projects/junto-labs/nvalt-proto/src/cljs/nvalt_proto/cards.cljs
+notifying browser that file changed:  out/nvalt_proto/cards.js
+[32mSuccessfully compiled "resources/public/js/dev-compiled/dev.js" in 0.35 seconds.[0m
+[0mCompiling "resources/public/js/dev-compiled/dev.js" from ["src/cljs" "src/cljc"]...
+WARNING: Use of undeclared Var nvalt-proto.cards/v at line 36 /Users/alexandergunnarson/Development/Source Code Projects/junto-labs/nvalt-proto/src/cljs/nvalt_proto/cards.cljs
+notifying browser that file changed:  out/nvalt_proto/cards.js
+[32mSuccessfully compiled "resources/public/js/dev-compiled/dev.js" in 0.252 seconds.[0m
+[0mCompiling "resources/public/js/dev-compiled/dev.js" from ["src/cljs" "src/cljc"]...
+notifying browser that file changed:  out/nvalt_proto/cards.js
+[32mSuccessfully compiled "resources/public/js/dev-compiled/dev.js" in 0.235 seconds.[0m
+[0mCompiling "resources/public/js/dev-compiled/dev.js" from ["src/cljs" "src/cljc"]...
+notifying browser that file changed:  out/nvalt_proto/cards.js
+[32mSuccessfully compiled "resources/public/js/dev-compiled/dev.js" in 0.268 seconds.[0m
+[0mCompiling "resources/public/js/dev-compiled/dev.js" from ["src/cljs" "src/cljc"]...
+notifying browser that file changed:  out/nvalt_proto/cards.js
+[32mSuccessfully compiled "resources/public/js/dev-compiled/dev.js" in 0.347 seconds.[0m
+[0mCompiling "resources/public/js/dev-compiled/dev.js" from ["src/cljs" "src/cljc"]...
+[31mCompiling "resources/public/js/dev-compiled/dev.js" failed.
+[0mERROR: Unclosed group near index 45
+(?<=(Category:)[0-9]?[0-9]?[0-9]?[0-9] births
+                                             ^ on file /Users/alexandergunnarson/Development/Source Code Projects/junto-labs/nvalt-proto/src/cljs/nvalt_proto/cards.cljs, line 46, column 67
+[32mSuccessfully compiled "resources/public/js/dev-compiled/dev.js" in 0.178 seconds.[0m
+[0mCompiling "resources/public/js/dev-compiled/dev.js" from ["src/cljs" "src/cljc"]...
+[31mCompiling "resources/public/js/dev-compiled/dev.js" failed.
+[0mERROR: Dangling meta character '?' near index 0
+?<=(Category:)[0-9]?[0-9]?[0-9]?[0-9] births
+^ on file /Users/alexandergunnarson/Development/Source Code Projects/junto-labs/nvalt-proto/src/cljs/nvalt_proto/cards.cljs, line 46, column 66
+[32mSuccessfully compiled "resources/public/js/dev-compiled/dev.js" in 0.154 seconds.[0m
+[0mCompiling "resources/public/js/dev-compiled/dev.js" from ["src/cljs" "src/cljc"]...
+notifying browser that file changed:  out/nvalt_proto/cards.js
+[32mSuccessfully compiled "resources/public/js/dev-compiled/dev.js" in 0.229 seconds.[0m
+[0mCompiling "resources/public/js/dev-compiled/dev.js" from ["src/cljs" "src/cljc"]...
+notifying browser that file changed:  out/nvalt_proto/cards.js
+[32mSuccessfully compiled "resources/public/js/dev-compiled/dev.js" in 0.236 seconds.[0m
+[0mCompiling "resources/public/js/dev-compiled/dev.js" from ["src/cljs" "src/cljc"]...
+notifying browser that file changed:  out/nvalt_proto/cards.js
+[32mSuccessfully compiled "resources/public/js/dev-compiled/dev.js" in 0.221 seconds.[0m
+[0mCompiling "resources/public/js/dev-compiled/dev.js" from ["src/cljs" "src/cljc"]...
+notifying browser that file changed:  out/nvalt_proto/cards.js
+[32mSuccessfully compiled "resources/public/js/dev-compiled/dev.js" in 0.201 seconds.[0m
+[0mCompiling "resources/public/js/dev-compiled/dev.js" from ["src/cljs" "src/cljc"]...
+notifying browser that file changed:  out/nvalt_proto/cards.js
+[32mSuccessfully compiled "resources/public/js/dev-compiled/dev.js" in 0.289 seconds.[0m
+[0mCompiling "resources/public/js/dev-compiled/dev.js" from ["src/cljs" "src/cljc"]...
+notifying browser that file changed:  out/nvalt_proto/cards.js
+[32mSuccessfully compiled "resources/public/js/dev-compiled/dev.js" in 0.281 seconds.[0m
+[0mCompiling "resources/public/js/dev-compiled/dev.js" from ["src/cljs" "src/cljc"]...
+notifying browser that file changed:  out/nvalt_proto/cards.js
+[32mSuccessfully compiled "resources/public/js/dev-compiled/dev.js" in 0.199 seconds.[0m
+[0mCompiling "resources/public/js/dev-compiled/dev.js" from ["src/cljs" "src/cljc"]...
+notifying browser that file changed:  out/nvalt_proto/cards.js
+[32mSuccessfully compiled "resources/public/js/dev-compiled/dev.js" in 0.213 seconds.[0m
+[0mCompiling "resources/public/js/dev-compiled/dev.js" from ["src/cljs" "src/cljc"]...
+notifying browser that file changed:  out/nvalt_proto/cards.js
+[32mSuccessfully compiled "resources/public/js/dev-compiled/dev.js" in 0.279 seconds.[0m
+[0mCompiling "resources/public/js/dev-compiled/dev.js" from ["src/cljs" "src/cljc"]...
+notifying browser that file changed:  out/nvalt_proto/cards.js
+[32mSuccessfully compiled "resources/public/js/dev-compiled/dev.js" in 0.204 seconds.[0m
+[0mCompiling "resources/public/js/dev-compiled/dev.js" from ["src/cljs" "src/cljc"]...
+notifying browser that file changed:  out/nvalt_proto/cards.js
+[32mSuccessfully compiled "resources/public/js/dev-compiled/dev.js" in 0.308 seconds.[0m
+[0mCompiling "resources/public/js/dev-compiled/dev.js" from ["src/cljs" "src/cljc"]...
+notifying browser that file changed:  out/nvalt_proto/cards.js
+[32mSuccessfully compiled "resources/public/js/dev-compiled/dev.js" in 0.324 seconds.[0m
+[0mCompiling "resources/public/js/dev-compiled/dev.js" from ["src/cljs" "src/cljc"]...
+notifying browser that file changed:  out/nvalt_proto/cards.js
+[32mSuccessfully compiled "resources/public/js/dev-compiled/dev.js" in 0.365 seconds.[0m
+[0mCompiling "resources/public/js/dev-compiled/dev.js" from ["src/cljs" "src/cljc"]...
+notifying browser that file changed:  out/nvalt_proto/cards.js
+[32mSuccessfully compiled "resources/public/js/dev-compiled/dev.js" in 0.385 seconds.[0m
+[0mCompiling "resources/public/js/dev-compiled/dev.js" from ["src/cljs" "src/cljc"]...
+notifying browser that file changed:  out/nvalt_proto/cards.js
+[32mSuccessfully compiled "resources/public/js/dev-compiled/dev.js" in 0.222 seconds.[0m
+[0mCompiling "resources/public/js/dev-compiled/dev.js" from ["src/cljs" "src/cljc"]...
+notifying browser that file changed:  out/nvalt_proto/cards.js
+[32mSuccessfully compiled "resources/public/js/dev-compiled/dev.js" in 0.39 seconds.[0m
+[0mCompiling "resources/public/js/dev-compiled/dev.js" from ["src/cljs" "src/cljc"]...
+notifying browser that file changed:  out/nvalt_proto/cards.js
+[32mSuccessfully compiled "resources/public/js/dev-compiled/dev.js" in 0.326 seconds.[0m
+[0mCompiling "resources/public/js/dev-compiled/dev.js" from ["src/cljs" "src/cljc"]...
+WARNING: Wrong number of args (1) passed to cljs.core/zipmap at line 62 /Users/alexandergunnarson/Development/Source Code Projects/junto-labs/nvalt-proto/src/cljs/nvalt_proto/cards.cljs
+notifying browser that file changed:  out/nvalt_proto/cards.js
+[32mSuccessfully compiled "resources/public/js/dev-compiled/dev.js" in 0.29 seconds.[0m
+[0mCompiling "resources/public/js/dev-compiled/dev.js" from ["src/cljs" "src/cljc"]...
+notifying browser that file changed:  out/nvalt_proto/cards.js
+[32mSuccessfully compiled "resources/public/js/dev-compiled/dev.js" in 0.268 seconds.[0m
+[0mCompiling "resources/public/js/dev-compiled/dev.js" from ["src/cljs" "src/cljc"]...
+notifying browser that file changed:  out/nvalt_proto/cards.js
+[32mSuccessfully compiled "resources/public/js/dev-compiled/dev.js" in 0.273 seconds.[0m
+[0mCompiling "resources/public/js/dev-compiled/dev.js" from ["src/cljs" "src/cljc"]...
+notifying browser that file changed:  out/nvalt_proto/cards.js
+[32mSuccessfully compiled "resources/public/js/dev-compiled/dev.js" in 0.208 seconds.[0m
